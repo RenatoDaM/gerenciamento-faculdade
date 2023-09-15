@@ -21,7 +21,7 @@ Features planejadas que ainda **não entraram em desenvolvimento**:
 2. Altere as informações necessárias para funcionar na sua máquina no arquivo [application.properties](application.properties),
 como por exemplo username e password. Da forma que está configurado é necessário criar um banco de dados manualmente 
 que se chama db_faculdade (o que pode também ser alterado no arquivo applications), porém, não é necessário criar 
-as tabelas, ao rodar a aplicação ela irá criar as tabelas caso já não exista.
+as tabelas, ao rodar a aplicação irá criar as tabelas caso já não exista.
 3. Na pasta root caso use o gerenciador de dependencias Maven, execute o comando pelo terminal: mvn spring-boot:run, caso use Gradle, é necessario mudar os arquivos que gerenciam as dependencias e após executar com o comando ./gradlew bootRun, para mais informações sobre como passar o projeto para Gradle deixo o link da documentação Springboot referente a Gradle: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
 4. A documentação da API se encontra no http://localhost:8080/api-doc (ainda não implementada)
 
