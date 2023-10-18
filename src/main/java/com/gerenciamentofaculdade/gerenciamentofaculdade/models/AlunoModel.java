@@ -13,21 +13,20 @@ public class AlunoModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "RA não pode ser nulo")
     @Column(unique = true)
     private Long ra;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "RA não pode estar em branco")
+    @NotNull(message = "Nome não pode ser nulo")
     @Column(length = 60, nullable = false)
     private String nome;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "O primeiro telefone não pode ser nulo")
+    @NotNull(message = "O primeiro telefone não estar em branco")
     @Column(length = 17, nullable = false)
     private String telefone1;
 
-    @NotBlank
     @Column(length = 17)
     private String telefone2;
 
