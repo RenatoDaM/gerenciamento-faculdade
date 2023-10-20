@@ -1,18 +1,17 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ErrorResponse {
+public class CustomErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime timestamp;
     int code;
     String message;
     List<String> detalhes;
 
-    public ErrorResponse(int code, String message, List<String> detalhes) {
+    public CustomErrorResponse(int code, String message, List<String> detalhes) {
         this.code = code;
         this.message = message;
         this.detalhes = detalhes;
