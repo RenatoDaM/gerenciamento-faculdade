@@ -1,8 +1,10 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.services.AlunoService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,16 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @Validated
+@CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/faculdade/aluno")
 public class AlunoController {
     @Autowired
     AlunoService service;
 
     @PostMapping
-    public ResponseEntity<AlunoModel> postAluno(@Valid @RequestBody AlunoModel alunoModel) throws Exception {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.postAluno(alunoModel));
+    public ResponseEntity<AlunoDTO> postAluno(@Valid @RequestBody AlunoDTO alunoDto) throws Exception {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.postAluno(alunoDto));
     }
 
     @GetMapping("/{id}")
@@ -31,17 +34,20 @@ public class AlunoController {
     }
 
     @GetMapping
-    public Page<AlunoModel> getAllAlunos(@RequestParam(required = false, value = "ra") String ra,
+    public Page<AlunoDTO> getAllAlunos(@RequestParam(required = false, value = "ra") String ra,
                                          @RequestParam(required = false, value = "nome") String nome,
-                                         @PageableDefault(size = 10) Pageable pageable) {
+                                         @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
         var alunoParams = new AlunoParams(ra, nome);
         return service.getAllAlunos(alunoParams, pageable);
     }
 
-    @PutMapping
-    public ResponseEntity<AlunoModel> updateAluno(@PathVariable Long id, @Valid @RequestBody AlunoModel alunoModel) {
+    @PutMapping("{id}")
+    public ResponseEntity<AlunoDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody AlunoModel alunoModel) {
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAluno(id, alunoModel));
     }
 
-
+    @DeleteMapping("{id}")
+    public void deleteAluno(@PathVariable Long id) {
+        service.deleteAluno(id);
+    }
 }
