@@ -4,18 +4,28 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CustomErrorResponse {
+public class ErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime timestamp;
+    public LocalDateTime timestamp;
     int code;
     String message;
     List<String> detalhes;
 
-    public CustomErrorResponse(int code, String message, List<String> detalhes) {
+    public ErrorResponse(int code, String message, List<String> detalhes) {
         this.code = code;
         this.message = message;
         this.detalhes = detalhes;
         timestamp = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "ErrorResponse{" +
+                "timestamp=" + timestamp +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", detalhes=" + detalhes +
+                '}';
     }
 
     public LocalDateTime getTimestamp() {
