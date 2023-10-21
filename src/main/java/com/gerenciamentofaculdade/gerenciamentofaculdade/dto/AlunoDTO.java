@@ -1,6 +1,6 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.request;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.dto;
 
-public class AlunoRequest {
+public class AlunoDTO {
     private Long id;
     private Long ra;
     private String nome;
