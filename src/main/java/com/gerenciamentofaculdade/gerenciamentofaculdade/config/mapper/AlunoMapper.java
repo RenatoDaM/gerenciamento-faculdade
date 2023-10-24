@@ -1,7 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.AlunoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

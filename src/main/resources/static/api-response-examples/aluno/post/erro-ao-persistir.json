@@ -1,0 +1,8 @@
+{
+  "timestamp": "2023-10-22 14:26:04",
+  "code": 400,
+  "message": "Bad Request",
+  "detalhes": [
+    "Já existe um aluno com este RA | E-mail já cadastrado | RA inválido | Telefone inválido | E-mail inválido"
+  ]
+}
