@@ -1,4 +1,4 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.exception.handler;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
