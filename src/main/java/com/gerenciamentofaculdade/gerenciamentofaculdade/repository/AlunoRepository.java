@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<AlunoModel, Long> {
-    AlunoModel findByRa(Long ra);
+    AlunoModel findByRa(String ra);
+    AlunoModel findByEmail(String email);
 }
