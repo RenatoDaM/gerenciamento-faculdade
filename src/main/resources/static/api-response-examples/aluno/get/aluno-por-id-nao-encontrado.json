@@ -1,0 +1,8 @@
+{
+    "timestamp": "2023-10-23 13:54:00",
+    "code": 400,
+    "message": "Bad Request",
+    "detalhes": [
+        "Operação não concluída, não foi encontrado um aluno com este ID | É necessário que a variável do path referente ao ID do aluno seja um valor numérico"
+    ]
+}

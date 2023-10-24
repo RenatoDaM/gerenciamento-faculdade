@@ -1,8 +1,8 @@
 {
-  "timestamp": "2023-10-22T15:45:05.026Z",
-  "code": 201,
-  "message": "Criado com sucesso",
-  "detalhes": [
-    "string"
-  ]
+  "id": 102,
+  "ra": "3234689453065893462013573",
+  "nome": "José da Silva",
+  "email": "jose.da.silva@gmail.com",
+  "telefone1": "21996535564",
+  "telefone2": null
 }
