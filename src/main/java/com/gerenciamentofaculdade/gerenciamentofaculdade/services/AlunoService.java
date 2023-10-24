@@ -3,7 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.services;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.AlunoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.AlunoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -12,7 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,11 +26,19 @@ public class AlunoService {
         this.alunoRepository = alunoRepository;
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
     public AlunoDTO postAluno(AlunoDTO aluno) throws Exception {
-        AlunoModel verificarAluno = alunoRepository.findByRa(aluno.getRa());
-        if (verificarAluno != null) {
+        AlunoModel verificarAlunoRA = alunoRepository.findByRa(aluno.getRa());
+        AlunoModel verificarAlunoEmail = alunoRepository.findByEmail(aluno.getEmail());
+
+        if (verificarAlunoRA != null) {
             log.warn("Não foi possível persistir aluno, pois foi inserido um RA já existente");
-            throw new Exception("Operação não concluída. Já existe um aluno com este RA");
+            throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este RA");
+        }
+
+        if (verificarAlunoEmail != null) {
+            log.warn("Não foi possível persistir aluno, pois foi inserido um email já existente no sistema");
+            throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este email cadastrado");
         }
 
         if (aluno == null) {
@@ -37,18 +46,18 @@ public class AlunoService {
             throw new Exception("Aluno não pode ser nulo");
         }
 
-        AlunoModel alunoModelToPersist = AlunoMapper.INSTANCE.dtoToModel(aluno);;
+        AlunoModel alunoModelToPersist = AlunoMapper.INSTANCE.dtoToModel(aluno);
         AlunoDTO retornarAlunoComId = AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(alunoModelToPersist));
         log.info("Aluno com RA: {} foi persistido com sucesso", aluno.getRa());
         return retornarAlunoComId;
     }
 
-    public AlunoModel getAluno(Long id) {
-        return alunoRepository.findById(id)
+    public AlunoDTO getAluno(Long id) {
+        return AlunoMapper.INSTANCE.modelToDTO(alunoRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Não foi encontrado um Aluno com o ID: {}", id);
                     return new EntityNotFoundException("Operação não concluída, não foi encontrado um aluno com este ID");
-                });
+                }));
     }
 
     public Page<AlunoDTO> getAllAlunos(AlunoParams params, Pageable pageable) {
@@ -57,26 +66,34 @@ public class AlunoService {
         return paginarLista(resultList, pageable);
     }
 
-    public AlunoDTO updateAluno(Long id, AlunoModel aluno) {
+    @Transactional(rollbackFor = {SQLException.class})
+    public AlunoDTO updateAluno(Long id, AlunoModel aluno) throws Exception {
         Optional<AlunoModel> alunoAntesDaAtualizacao = alunoRepository.findById(id);
-        Optional<AlunoModel> alunoModel = Optional.ofNullable(aluno);
-        if (alunoAntesDaAtualizacao.isPresent() && alunoModel.isPresent()) {
+
+        if (!Objects.equals(alunoRepository.findByRa(aluno.getRa()).getId(), aluno.getId())) {
+            log.warn("Ouve tentativa mal sucedida de atualizar o RA do aluno: " + alunoAntesDaAtualizacao.get().getNome() + " que possui RA: " + alunoAntesDaAtualizacao.get().getRa() + ". Motivo do erro: Já existe outro aluno cadastrado com o RA inserido para atualização");
+            throw new IllegalArgumentException("Não foi possível atualizar. Já existe outro aluno cadastrado com este RA");
+        }
+
+        if (alunoAntesDaAtualizacao.isPresent()) {
             aluno.setId(id);
             loggarModificacoes(alunoAntesDaAtualizacao.get(), aluno);
-            AlunoDTO alunoDTO = AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(aluno));
-            return alunoDTO;
+            return AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(aluno));
         } else {
             throw new EntityNotFoundException("Operação não concluida, não foi encontrado um aluno com este ID");
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
     public void deleteAluno(Long id) {
-        alunoRepository.findById(id)
+        AlunoModel alunoModel = alunoRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Não foi encontrado um Aluno com o ID: {} para deletar", id);
                     return new EntityNotFoundException("Operação não concluída, não foi encontrado um aluno com este ID para poder deletar");
                 });
+
         alunoRepository.deleteById(id);
+        log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
     }
 
     private Page<AlunoDTO> paginarLista(List<AlunoDTO> lista, Pageable pageable){
@@ -99,7 +116,7 @@ public class AlunoService {
     private Map<String, String> criarMapParaComparacao(AlunoModel aluno) {
         Map<String, String> compare = new HashMap<>();
         compare.put("nome", aluno.getNome());
-        compare.put("ra", String.valueOf(aluno.getRa()));
+        compare.put("ra", aluno.getRa());
         compare.put("telefone1", aluno.getTelefone1());
         compare.put("telefone2", aluno.getTelefone2());
 
@@ -110,7 +127,6 @@ public class AlunoService {
                 entry.setValue("<Vazio>");
             }
         }
-
         return compare;
     }
 }
