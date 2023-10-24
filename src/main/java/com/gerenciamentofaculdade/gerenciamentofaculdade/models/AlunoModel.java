@@ -3,6 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -13,17 +14,15 @@ public class AlunoModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "RA não pode ser nulo")
-    @Column(unique = true)
-    private Long ra;
+    @Column(unique = true, nullable = false, length = 25)
+    private String ra;
 
-    @NotBlank(message = "RA não pode estar em branco")
-    @NotNull(message = "Nome não pode ser nulo")
     @Column(length = 60, nullable = false)
     private String nome;
 
-    @NotBlank(message = "O primeiro telefone não pode ser nulo")
-    @NotNull(message = "O primeiro telefone não estar em branco")
+    @Column(length = 320, nullable = false, unique = true)
+    private String email;
+
     @Column(length = 17, nullable = false)
     private String telefone1;
 
@@ -31,7 +30,7 @@ public class AlunoModel {
     private String telefone2;
 
     @OneToMany(mappedBy = "alunoModel")
-    List<MatriculaModel> matriculasModel;
+    private List<MatriculaModel> matriculasModel;
 
     public Long getId() {
         return id;
@@ -41,11 +40,11 @@ public class AlunoModel {
         this.id = id;
     }
 
-    public Long getRa() {
+    public String getRa() {
         return ra;
     }
 
-    public void setRa(Long ra) {
+    public void setRa(String ra) {
         this.ra = ra;
     }
 
@@ -55,6 +54,14 @@ public class AlunoModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTelefone1() {
