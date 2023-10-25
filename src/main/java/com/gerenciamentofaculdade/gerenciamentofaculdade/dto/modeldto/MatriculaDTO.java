@@ -1,5 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.CursoModel;
 import jakarta.persistence.*;
@@ -25,8 +26,10 @@ public class MatriculaDTO {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dataMatricula;
 
+    @JsonProperty("aluno")
     private AlunoDTO alunoDTO;
 
+    @JsonProperty("curso")
     private CursoDTO cursoDTO;
 
     public Long getId() {

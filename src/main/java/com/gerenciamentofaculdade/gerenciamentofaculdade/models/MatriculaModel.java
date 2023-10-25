@@ -24,12 +24,24 @@ public class MatriculaModel {
     private LocalDateTime dataMatricula;
 
     @ManyToOne
-    @JoinColumn(name="aluno_id")
+    @JoinColumn(name="aluno_id", nullable = false)
     private AlunoModel alunoModel;
 
     @ManyToOne
-    @JoinColumn(name="curso_id")
+    @JoinColumn(name="curso_id", nullable = false)
     private CursoModel cursoModel;
+
+    @Override
+    public String toString() {
+        return "MatriculaModel{" +
+                "id=" + id +
+                ", estadoMatricula=" + estadoMatricula +
+                ", ciclo=" + ciclo +
+                ", dataMatricula=" + dataMatricula +
+                ", alunoModel=" + alunoModel +
+                ", cursoModel=" + cursoModel +
+                '}';
+    }
 
     public Long getId() {
         return id;

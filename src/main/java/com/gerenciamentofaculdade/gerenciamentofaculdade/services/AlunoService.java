@@ -5,6 +5,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class AlunoService {
     public Page<AlunoDTO> getAllAlunos(AlunoParams params, Pageable pageable) {
         List<AlunoDTO> resultList = new ArrayList<>();
         alunoRepository.findAll().forEach(alunoModel -> resultList.add(AlunoMapper.INSTANCE.modelToDTO(alunoModel)));
-        return paginarLista(resultList, pageable);
+        return PaginationUtil.paginarLista(resultList, pageable);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -94,14 +95,6 @@ public class AlunoService {
 
         alunoRepository.deleteById(id);
         log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
-    }
-
-    private Page<AlunoDTO> paginarLista(List<AlunoDTO> lista, Pageable pageable){
-        int inicio, fim;
-        inicio = (int) pageable.getOffset();
-        fim = (inicio + pageable.getPageSize()) > lista.size() ? lista.size() : (inicio + pageable.getPageSize());
-        Page<AlunoDTO> paginacao = new PageImpl<>(lista.stream().collect(Collectors.toList()).subList(inicio, fim), pageable, lista.size());
-        return paginacao;
     }
 
     private void loggarModificacoes(AlunoModel antes, AlunoModel depois) {

@@ -21,7 +21,11 @@ public class MatriculaService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public MatriculaDTO matricularAluno(MatriculaDTO matriculaDTO) {
+        System.out.println(matriculaDTO.getAlunoDTO().getId());
+        System.out.println(matriculaDTO.getCursoDTO().getId());
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
+        System.out.println(matriculaModel);
+
         matriculaDTO.setId(matriculaRepository.save(matriculaModel).getId());
         return matriculaDTO;
     }
