@@ -49,7 +49,8 @@ public class SwaggerAlunoFunctionalConfig {
                         findAllAlunos(), ops -> {
                             try {
                                 ops
-                                        .operationId("hello")
+                                        .operationId("getAllAlunos")
+                                        .summary("Lista alunos cadastrados")
                                         .parameter(parameterBuilder().name("size").description("Quantidade de itens que serão retornados na página").example("10"))
                                         .parameter(parameterBuilder().name("page").description("Número da página retornada").example("0"))
                                         .response(responseBuilder().responseCode("200").description("Resposta esperada, retornado uma página Pageable contendo uma lista de alunos"))
