@@ -2,7 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.models;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoMatriculaEnum;
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "matricula")
 @Table(name = "matricula")
@@ -19,9 +19,9 @@ public class MatriculaModel {
     @Column(columnDefinition = "integer", nullable = false)
     private Integer ciclo;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition = "date")
-    private Date dataMatricula;
+    private LocalDateTime dataMatricula;
 
     @ManyToOne
     @JoinColumn(name="aluno_id")
@@ -55,11 +55,11 @@ public class MatriculaModel {
         this.ciclo = ciclo;
     }
 
-    public Date getDataMatricula() {
+    public LocalDateTime getDataMatricula() {
         return dataMatricula;
     }
 
-    public void setDataMatricula(Date dataMatricula) {
+    public void setDataMatricula(LocalDateTime dataMatricula) {
         this.dataMatricula = dataMatricula;
     }
 

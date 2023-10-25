@@ -1,8 +1,14 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
+import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.models.CursoModel;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class MatriculaDTO {
     private Long id;
@@ -15,6 +21,13 @@ public class MatriculaDTO {
     // semestre atual
     @NotNull
     private Integer ciclo;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dataMatricula;
+
+    private AlunoDTO alunoDTO;
+
+    private CursoDTO cursoDTO;
 
     public Long getId() {
         return id;
@@ -38,5 +51,29 @@ public class MatriculaDTO {
 
     public void setCiclo(Integer ciclo) {
         this.ciclo = ciclo;
+    }
+
+    public LocalDateTime getDataMatricula() {
+        return dataMatricula;
+    }
+
+    public void setDataMatricula(LocalDateTime dataMatricula) {
+        this.dataMatricula = dataMatricula;
+    }
+
+    public AlunoDTO getAlunoDTO() {
+        return alunoDTO;
+    }
+
+    public void setAlunoDTO(AlunoDTO alunoDTO) {
+        this.alunoDTO = alunoDTO;
+    }
+
+    public CursoDTO getCursoDTO() {
+        return cursoDTO;
+    }
+
+    public void setCursoDTO(CursoDTO cursoDTO) {
+        this.cursoDTO = cursoDTO;
     }
 }
