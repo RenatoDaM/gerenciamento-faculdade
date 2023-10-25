@@ -6,6 +6,9 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.Matricula
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.MatriculaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.MatriculaRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +22,21 @@ public class MatriculaService {
         this.matriculaRepository = matriculaRepository;
     }
 
+    private final Logger log = LoggerFactory.getLogger(MatriculaService.class);
+
     @Transactional(rollbackFor = {SQLException.class})
     public MatriculaDTO matricularAluno(MatriculaDTO matriculaDTO) {
-        System.out.println(matriculaDTO.getAlunoDTO().getId());
-        System.out.println(matriculaDTO.getCursoDTO().getId());
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
-        System.out.println(matriculaModel);
-
         matriculaDTO.setId(matriculaRepository.save(matriculaModel).getId());
         return matriculaDTO;
+    }
+
+    public MatriculaDTO getMatricula(Long id) {
+        return MatriculaMapper.INSTANCE.modelToDto(matriculaRepository.findById(id).orElseThrow(() -> {
+            log.warn("Não foi encontrado uma Matrícula com o ID: {}", id);
+            return new EntityNotFoundException("Operação não concluída, não foi encontrada uma matrícula com este ID");
+        }));
+
+
     }
 }

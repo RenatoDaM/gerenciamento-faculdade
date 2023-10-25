@@ -18,6 +18,9 @@ public interface MatriculaMapper {
     @Mapping(target = "cursoModel", source = "cursoDTO")
     MatriculaModel dtoToModel(MatriculaDTO matriculaDTO);
 
+    @Mapping(target = "alunoDTO", source = "alunoModel")
+    @Mapping(target = "cursoDTO", source = "cursoModel")
+    MatriculaDTO modelToDto(MatriculaModel matriculaModel);
 /*    default AlunoModel alunoDtoToAlunoModel(AlunoDTO alunoDTO) {
         return Mappers.getMapper(AlunoMapper.class).dtoToModel(alunoDTO);
     }
