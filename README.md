@@ -16,13 +16,25 @@ Features planejadas que ainda **não entraram em desenvolvimento**:
 - Autenticação e autorização com Spring Security e seguindo protocolo OAuth2
 - Acesso personalizado a cada usuário (aluno, professor, secretaria, etc.)
 
+## Sumário
+- [Requisitos](#requisitos)
+- [Get Started](#get-started)
+
+## Requisitos
+1. JDK 20
+2. Maven
+
 ## Get Started
 1. Clone o reposítório
 2. Altere as informações necessárias para funcionar na sua máquina no arquivo [application.properties](src/main/resources/application.properties),
 como por exemplo username e password. Da forma que está configurado é necessário criar um banco de dados manualmente 
 que se chama db_faculdade (o que pode também ser alterado no arquivo applications), porém, não é necessário criar 
 as tabelas, ao rodar a aplicação irá criar as tabelas caso já não exista.
-3. Na pasta root caso use o gerenciador de dependencias Maven, execute o comando pelo terminal: mvn spring-boot:run, caso use Gradle, é necessario mudar os arquivos que gerenciam as dependencias e após isso executar com o comando ./gradlew bootRun. Para mais informações sobre como passar o projeto para Gradle deixo o link da documentação Springboot referente a Gradle: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
-4. A documentação da API se encontra no http://localhost:8080/api-docs.html
+3. Na pasta root execute maven clean install (com o uso do MapStruct se faz necessário, achei importante comentar já que com algumas configurações é possível rodar sem esse procedimento)
+3. Na pasta root execute o comando pelo terminal: mvn spring-boot:run, caso use Gradle, é necessario mudar os arquivos que gerenciam as dependencias e após isso executar com o comando ./gradlew bootRun. Para mais informações sobre como passar o projeto para Gradle deixo o link da documentação Springboot referente a Gradle: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
+4. A documentação da API se encontra no http://localhost:8080/api-docs.html (lembrando, caso mude a porta que está rodando a aplicação, deverá ser usada a sua porta em uso)
+
+## Estado do desenvolvimento
+Atualmente foram desenvolvidas as rotas: **usuario**, **curso** e **matricula**. Apenas a rota usuarios está devidamente testada e documentada.
 
 
