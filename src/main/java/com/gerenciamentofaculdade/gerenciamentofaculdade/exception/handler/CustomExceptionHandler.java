@@ -43,17 +43,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             teste.set(i, teste.get(i).trim());
         }
 
-        logger.warn("Tentativa de persistência ou alteração de dados que violam restrições. Nome do objeto: " + ex.getObjectName() + ". Restrições: " + teste);
         ErrorResponse error = new ErrorResponse(400,"Violação de restrição", teste);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.setDateFormat(df);
-        try {
-            System.out.println(mapper.writeValueAsString(error));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

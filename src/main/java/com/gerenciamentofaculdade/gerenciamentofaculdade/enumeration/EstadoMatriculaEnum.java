@@ -3,7 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration;
 public enum EstadoMatriculaEnum {
     ATIVA("ATIVA"), TRANCADA("TRANCADA"), CONCLUIDA("CONCLUIDA");
 
-    private String value;
+    private final String value;
 
     EstadoMatriculaEnum(String value) {
         this.value = value;

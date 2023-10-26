@@ -28,6 +28,7 @@ public class CursoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public CursoDTO postCurso(CursoDTO cursoDTO) {
+        if (cursoRepository.existsCursoModelByNome(cursoDTO.getNome())) throw new IllegalArgumentException("Operação não concluída. Já existe um curso com este nome");
         CursoModel cursoToPersist = CursoMapper.INSTANCE.dtoToModel(cursoDTO);
         cursoDTO.setId(cursoRepository.save(cursoToPersist).getId());
         return cursoDTO;

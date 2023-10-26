@@ -4,18 +4,20 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 public class CursoDTO {
     @ReadOnlyProperty
     private Long id;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
+    @NotNull(message = "Nome do curso não pode ser nulo")
+    @NotEmpty(message = "Nome do curso não estar vazio")
+    @NotBlank(message = "Nome do curso não pode estar em branco")
     private String nome;
 
-    @NotNull
+    @NotNull(message = "Quantidade de semestres do curso não pode ser nulo")
+    @Positive(message = "Quantidade de semestres do curso precisa ser maior que zero")
     private Integer qtdSemestre;
 
     public Long getId() {
