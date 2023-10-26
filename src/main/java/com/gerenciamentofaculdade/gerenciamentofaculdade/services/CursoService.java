@@ -1,24 +1,20 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.services;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.AlunoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.models.CursoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtil;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CursoService {
@@ -48,9 +44,10 @@ public class CursoService {
     public Page<CursoDTO> getAllCursos(Pageable pageable) {
         List<CursoDTO> cursoDTOList = new ArrayList<>();
         cursoRepository.findAll().forEach(cursoModel -> cursoDTOList.add(CursoMapper.INSTANCE.modelToDTO(cursoModel)));
-        return PaginationUtil.paginarLista(cursoDTOList, pageable);
+        return PaginationUtils.paginarLista(cursoDTOList, pageable);
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
     public CursoDTO updateCurso(Long id, CursoDTO cursoDTO) {
         cursoDTO.setId(id);
         cursoRepository.save(CursoMapper.INSTANCE.dtoToModel(cursoDTO));

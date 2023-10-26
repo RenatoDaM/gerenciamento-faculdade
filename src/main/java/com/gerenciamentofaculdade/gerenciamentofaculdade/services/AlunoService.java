@@ -5,18 +5,16 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtil;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
@@ -64,7 +62,7 @@ public class AlunoService {
     public Page<AlunoDTO> getAllAlunos(AlunoParams params, Pageable pageable) {
         List<AlunoDTO> resultList = new ArrayList<>();
         alunoRepository.findAll().forEach(alunoModel -> resultList.add(AlunoMapper.INSTANCE.modelToDTO(alunoModel)));
-        return PaginationUtil.paginarLista(resultList, pageable);
+        return PaginationUtils.paginarLista(resultList, pageable);
     }
 
     @Transactional(rollbackFor = {SQLException.class})

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public class PaginationUtil {
+public class PaginationUtils {
     public static <T> Page<T> paginarLista(List<T> lista, Pageable pageable) {
         int inicio, fim;
         inicio = (int) pageable.getOffset();
