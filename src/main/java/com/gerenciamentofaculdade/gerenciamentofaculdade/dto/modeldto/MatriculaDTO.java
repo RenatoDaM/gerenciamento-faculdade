@@ -1,18 +1,13 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoMatriculaEnum;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.CursoModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.data.annotation.ReadOnlyProperty;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class MatriculaDTO {
-    @ReadOnlyProperty
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @NotNull(message = "Estado da matrícula não pode ser nulo")

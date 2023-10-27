@@ -31,6 +31,7 @@ public class MatriculaService {
     public MatriculaDTO matricularAluno(MatriculaDTO matriculaDTO) {
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
         matriculaDTO.setId(matriculaRepository.save(matriculaModel).getId());
+        log.info("Persistida matrícula com ID: {}", matriculaDTO.getId());
         return matriculaDTO;
     }
 
@@ -51,6 +52,7 @@ public class MatriculaService {
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
         matriculaModel.setId(id);
         matriculaRepository.save(matriculaModel);
+        log.info("Atualizada matrícula com ID: {}", id);
         matriculaDTO.setId(id);
         return matriculaDTO;
     }
@@ -58,5 +60,6 @@ public class MatriculaService {
     @Transactional
     public void deleteMatricula(Long id) {
         matriculaRepository.deleteById(id);
+        log.warn("Deletada matrícula com o ID: {}", id);
     }
 }

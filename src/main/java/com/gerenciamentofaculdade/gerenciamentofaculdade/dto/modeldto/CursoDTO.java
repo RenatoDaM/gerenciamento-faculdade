@@ -1,14 +1,14 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 public class CursoDTO {
-    @ReadOnlyProperty
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @NotNull(message = "Nome do curso não pode ser nulo")

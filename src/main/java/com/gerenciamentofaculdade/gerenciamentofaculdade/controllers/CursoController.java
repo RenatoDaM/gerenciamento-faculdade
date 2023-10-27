@@ -1,5 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers;
 
+import com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi.CursoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.services.CursoService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/faculdade/curso")
-public class CursoController {
+public class CursoController implements CursoControllerOpenApi {
     private final CursoService cursoService;
 
     public CursoController(CursoService cursoService) {

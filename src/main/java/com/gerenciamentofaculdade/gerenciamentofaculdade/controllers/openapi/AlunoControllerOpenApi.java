@@ -55,7 +55,7 @@ public interface AlunoControllerOpenApi {
     @Operation(summary = "Atualiza um aluno já existente no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(description = "Operação FALHOU. Não foi possível atualizar aluno", responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Não foi possível persistir", externalValue = "static/api-response-examples/aluno/put/erro-ao-atualizar.json"))),
-            @ApiResponse(description = "Aluno atualizado com sucesso", responseCode = "201", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno criado com sucesso", externalValue = "static/api-response-examples/aluno/put/atualizado-com-sucesso.json"), schema = @Schema(implementation = AlunoDTO.class))),
+            @ApiResponse(description = "Aluno atualizado com sucesso", responseCode = "201", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno atualizado", externalValue = "static/api-response-examples/aluno/put/atualizado-com-sucesso.json"), schema = @Schema(implementation = AlunoDTO.class))),
             @ApiResponse(description = "Erro servidor", responseCode = "500", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(description = "Tipo de mídia não suportado", responseCode = "415", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Tipo de mídia não suportado ainda", externalValue = "static/api-response-examples/geral/tipo-midia-nao-suportado.json")))
     })
@@ -64,7 +64,7 @@ public interface AlunoControllerOpenApi {
     @Operation(summary = "Deleta um aluno já existente no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(description = "Operação FALHOU. Não foi possível deletar aluno", responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Não foi possível deletar", externalValue = "static/api-response-examples/aluno/delete/erro-ao-deletar.json"))),
-            @ApiResponse(description = "Aluno atualizado com sucesso", responseCode = "201", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno criado com sucesso", externalValue = "static/api-response-examples/aluno/delete/deletado-com-sucesso.json"), schema = @Schema(implementation = AlunoDTO.class))),
+            @ApiResponse(description = "Aluno deletado com sucesso", responseCode = "201", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno deletado com sucesso", externalValue = "static/api-response-examples/aluno/delete/deletado-com-sucesso.json"), schema = @Schema(implementation = Response.class))),
             @ApiResponse(description = "Erro servidor", responseCode = "500", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Response> deleteAluno(@PathVariable Long id);

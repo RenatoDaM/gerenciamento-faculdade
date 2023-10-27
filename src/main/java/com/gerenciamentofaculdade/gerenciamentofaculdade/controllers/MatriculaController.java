@@ -1,5 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers;
 
+import com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi.MatriculaControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.services.MatriculaService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/faculdade/matricula")
-public class MatriculaController {
+public class MatriculaController implements MatriculaControllerOpenApi {
     private final MatriculaService matriculaService;
 
     public MatriculaController(MatriculaService matriculaService) {
