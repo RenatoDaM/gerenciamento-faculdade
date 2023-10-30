@@ -1,4 +1,4 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;

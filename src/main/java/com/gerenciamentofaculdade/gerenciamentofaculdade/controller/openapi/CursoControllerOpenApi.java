@@ -1,6 +1,5 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;

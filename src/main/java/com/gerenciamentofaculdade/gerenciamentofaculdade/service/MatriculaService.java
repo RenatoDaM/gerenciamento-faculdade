@@ -1,10 +1,10 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.services;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.MatriculaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.MatriculaModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.MatriculaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.MatriculaRepository;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtils;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class MatriculaService {

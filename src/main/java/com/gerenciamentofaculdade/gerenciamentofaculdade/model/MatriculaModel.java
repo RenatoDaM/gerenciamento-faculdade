@@ -1,8 +1,9 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.models;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoMatriculaEnum;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity(name = "matricula")
 @Table(name = "matricula")
@@ -89,5 +90,18 @@ public class MatriculaModel {
 
     public void setCursoModel(CursoModel cursoModel) {
         this.cursoModel = cursoModel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MatriculaModel that = (MatriculaModel) o;
+        return Objects.equals(id, that.id) && estadoMatricula == that.estadoMatricula && Objects.equals(ciclo, that.ciclo) && Objects.equals(dataMatricula, that.dataMatricula) && Objects.equals(alunoModel, that.alunoModel) && Objects.equals(cursoModel, that.cursoModel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, estadoMatricula, ciclo, dataMatricula, alunoModel, cursoModel);
     }
 }

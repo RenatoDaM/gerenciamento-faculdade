@@ -1,9 +1,9 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi.CursoControllerOpenApi;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.CursoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.services.CursoService;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.service.CursoService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

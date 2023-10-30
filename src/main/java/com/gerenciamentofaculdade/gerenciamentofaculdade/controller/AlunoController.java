@@ -1,11 +1,11 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.controllers;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.controllers.openapi.AlunoControllerOpenApi;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.services.AlunoService;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.service.AlunoService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

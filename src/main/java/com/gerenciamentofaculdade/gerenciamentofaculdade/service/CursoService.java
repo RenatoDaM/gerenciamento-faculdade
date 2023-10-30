@@ -1,11 +1,10 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.services;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.CursoModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.CursoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.utils.PaginationUtils;
-import jakarta.persistence.EntityExistsException;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

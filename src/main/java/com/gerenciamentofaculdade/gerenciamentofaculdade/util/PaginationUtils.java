@@ -1,4 +1,4 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.utils;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

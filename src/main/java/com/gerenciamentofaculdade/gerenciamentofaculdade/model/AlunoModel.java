@@ -1,11 +1,9 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.models;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "aluno")
 @Table(name = "aluno")
@@ -86,5 +84,18 @@ public class AlunoModel {
 
     public void setMatriculasModel(List<MatriculaModel> matriculasModel) {
         this.matriculasModel = matriculasModel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlunoModel that = (AlunoModel) o;
+        return Objects.equals(id, that.id) && Objects.equals(ra, that.ra) && Objects.equals(nome, that.nome) && Objects.equals(email, that.email) && Objects.equals(telefone1, that.telefone1) && Objects.equals(telefone2, that.telefone2) && Objects.equals(matriculasModel, that.matriculasModel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ra, nome, email, telefone1, telefone2, matriculasModel);
     }
 }

@@ -1,6 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.repository;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.models.AlunoModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
