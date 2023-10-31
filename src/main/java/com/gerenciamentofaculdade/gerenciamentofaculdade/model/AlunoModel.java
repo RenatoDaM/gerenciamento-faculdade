@@ -30,6 +30,20 @@ public class AlunoModel {
     @OneToMany(mappedBy = "alunoModel")
     private List<MatriculaModel> matriculasModel;
 
+    public AlunoModel(Long id, String ra, String nome, String email, String telefone1, String telefone2, List<MatriculaModel> matriculasModel) {
+        this.id = id;
+        this.ra = ra;
+        this.nome = nome;
+        this.email = email;
+        this.telefone1 = telefone1;
+        this.telefone2 = telefone2;
+        this.matriculasModel = matriculasModel;
+    }
+
+    public AlunoModel(){
+
+    }
+
     public Long getId() {
         return id;
     }

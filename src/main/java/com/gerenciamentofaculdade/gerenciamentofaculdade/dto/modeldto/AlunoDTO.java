@@ -2,7 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
+import java.util.Objects;
 
 public class AlunoDTO {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
@@ -30,6 +30,14 @@ public class AlunoDTO {
 
     @Pattern(regexp = "^\\d{11}$", message = "Telefone deve ser válido")
     private String telefone2;
+
+    public AlunoDTO(String ra, String nome, String email, String telefone1, String telefone2) {
+        this.ra = ra;
+        this.nome = nome;
+        this.email = email;
+        this.telefone1 = telefone1;
+        this.telefone2 = telefone2;
+    }
 
     public Long getId() {
         return id;
@@ -77,6 +85,19 @@ public class AlunoDTO {
 
     public void setTelefone2(String telefone2) {
         this.telefone2 = telefone2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlunoDTO alunoDTO = (AlunoDTO) o;
+        return Objects.equals(id, alunoDTO.id) && Objects.equals(ra, alunoDTO.ra) && Objects.equals(nome, alunoDTO.nome) && Objects.equals(email, alunoDTO.email) && Objects.equals(telefone1, alunoDTO.telefone1) && Objects.equals(telefone2, alunoDTO.telefone2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ra, nome, email, telefone1, telefone2);
     }
 }
 

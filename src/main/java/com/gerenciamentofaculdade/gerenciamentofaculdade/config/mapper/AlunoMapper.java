@@ -5,7 +5,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AlunoMapper {
     AlunoMapper INSTANCE = Mappers.getMapper( AlunoMapper.class );
 
