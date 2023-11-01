@@ -5,7 +5,9 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,22 +29,14 @@ public class AlunoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public AlunoDTO postAluno(AlunoDTO aluno) throws Exception {
-        AlunoModel verificarAlunoRA = alunoRepository.findByRa(aluno.getRa());
-        AlunoModel verificarAlunoEmail = alunoRepository.findByEmail(aluno.getEmail());
-
-        if (verificarAlunoRA != null) {
+        if (alunoRepository.findByRa(aluno.getRa()).isPresent()) {
             log.warn("Não foi possível persistir aluno, pois foi inserido um RA já existente");
             throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este RA");
         }
 
-        if (verificarAlunoEmail != null) {
+        if (alunoRepository.findByEmail(aluno.getEmail()).isPresent()) {
             log.warn("Não foi possível persistir aluno, pois foi inserido um email já existente no sistema");
             throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este email cadastrado");
-        }
-
-        if (aluno == null) {
-            log.warn("Não foi possível persistir aluno, pois o body estava vazio");
-            throw new Exception("Aluno não pode ser nulo");
         }
 
         AlunoModel alunoModelToPersist = AlunoMapper.INSTANCE.dtoToModel(aluno);
@@ -69,14 +63,14 @@ public class AlunoService {
     public AlunoDTO updateAluno(Long id, AlunoModel aluno) throws Exception {
         Optional<AlunoModel> alunoAntesDaAtualizacao = alunoRepository.findById(id);
 
-        if (!Objects.equals(alunoRepository.findByRa(aluno.getRa()).getId(), aluno.getId())) {
-            log.warn("Ouve tentativa mal sucedida de atualizar o RA do aluno: " + alunoAntesDaAtualizacao.get().getNome() + " que possui RA: " + alunoAntesDaAtualizacao.get().getRa() + ". Motivo do erro: Já existe outro aluno cadastrado com o RA inserido para atualização");
-            throw new IllegalArgumentException("Não foi possível atualizar. Já existe outro aluno cadastrado com este RA");
+        // vai procurar um aluno com o RA ao qual vai ser atualizado, caso seja diferente do objeto a ser atualizado jogará uma exceção
+        if (alunoRepository.findByRa(aluno.getRa()).isPresent() && !Objects.equals(alunoRepository.findByRa(aluno.getRa()).get().getId(), id)) {
+            throw new EntityExistsException("Já existe uma entidade com este RA");
         }
 
         if (alunoAntesDaAtualizacao.isPresent()) {
             aluno.setId(id);
-            loggarModificacoes(alunoAntesDaAtualizacao.get(), aluno);
+            EntityUpdateLogger.loggarModificacoes(alunoAntesDaAtualizacao.get(), aluno);
             return AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(aluno));
         } else {
             throw new EntityNotFoundException("Operação não concluida, não foi encontrado um aluno com este ID");
@@ -95,29 +89,4 @@ public class AlunoService {
         log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
     }
 
-    private void loggarModificacoes(AlunoModel antes, AlunoModel depois) {
-        Map<String, String> mapAntes = criarMapParaComparacao(antes);
-        Map<String, String> mapDepois= criarMapParaComparacao(depois);
-
-        for (Map.Entry<String, String> entry : mapDepois.entrySet()) {
-            if (!entry.getValue().equals(mapAntes.get(entry.getKey()))) log.info("Usuário com RA: {} foi atualizado. Campo {} foi alterado. Valor {} foi alterado para: {}", antes.getRa(), entry.getKey(), mapAntes.get(entry.getKey()), entry.getValue());
-        }
-    }
-
-    private Map<String, String> criarMapParaComparacao(AlunoModel aluno) {
-        Map<String, String> compare = new HashMap<>();
-        compare.put("nome", aluno.getNome());
-        compare.put("ra", aluno.getRa());
-        compare.put("telefone1", aluno.getTelefone1());
-        compare.put("telefone2", aluno.getTelefone2());
-
-        for (Map.Entry<String, String> entry : compare.entrySet()) {
-            if (entry.getValue() == null) {
-                entry.setValue("<Nulo>");
-            } else if (entry.getValue().equals("")) {
-                entry.setValue("<Vazio>");
-            }
-        }
-        return compare;
-    }
 }
