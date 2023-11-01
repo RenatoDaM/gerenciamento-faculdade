@@ -1,6 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.integrationtests;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.DisciplinaRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.DisciplinaService;
@@ -39,9 +39,9 @@ public class DisciplinaServiceTest {
     @Test
     @Order(1)
     public void setup() {
-        disciplinas.add(new DisciplinaDTO("Estatística", 60));
-        disciplinas.add(new DisciplinaDTO("IHC", 30));
-        disciplinas.add(new DisciplinaDTO("ESII", 90));
+        disciplinas.add(new DisciplinaDTO("Estatística", 60, new CursoDTO(1L, "ADS", 6)));
+        disciplinas.add(new DisciplinaDTO("IHC", 30, new CursoDTO(1L, "ADS", 6)));
+        disciplinas.add(new DisciplinaDTO("ESII", 90, new CursoDTO(1L, "ADS", 6)));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class DisciplinaServiceTest {
     @Test
     @Order(4)
     public void putTest() {
-        DisciplinaDTO disciplinaDTO = new DisciplinaDTO("Teste", 11);
+        DisciplinaDTO disciplinaDTO = new DisciplinaDTO("Teste", 11, new CursoDTO(1L, "ADS", 6));
         disciplinaService.putDisciplina(disciplinaDTO, idsToDelete.get(0));
         disciplinaDTO.setId(idsToDelete.get(0));
         assertEquals(disciplinaDTO, disciplinaService.getDisciplina(idsToDelete.get(0)));

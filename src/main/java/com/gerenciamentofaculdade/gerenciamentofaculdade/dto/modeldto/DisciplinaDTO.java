@@ -1,5 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,9 +20,18 @@ public class DisciplinaDTO {
     @NotNull(message = "Carga horária da disciplina não pode ser nula")
     Integer cargaHoraria;
 
-    public DisciplinaDTO(String nome, Integer cargaHoraria) {
+    @JsonProperty("curso")
+    @NotNull
+    CursoDTO cursoDTO;
+
+    public DisciplinaDTO(String nome, Integer cargaHoraria, CursoDTO cursoDTO) {
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
+        this.cursoDTO = cursoDTO;
+    }
+
+    public DisciplinaDTO() {
+
     }
 
     @Override
@@ -59,5 +69,13 @@ public class DisciplinaDTO {
 
     public void setCargaHoraria(Integer cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
+    }
+
+    public CursoDTO getCursoDTO() {
+        return cursoDTO;
+    }
+
+    public void setCursoDTO(CursoDTO cursoDTO) {
+        this.cursoDTO = cursoDTO;
     }
 }

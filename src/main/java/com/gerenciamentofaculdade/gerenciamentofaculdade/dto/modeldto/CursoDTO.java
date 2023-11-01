@@ -20,6 +20,15 @@ public class CursoDTO {
     @Positive(message = "Quantidade de semestres do curso precisa ser maior que zero")
     private Integer qtdSemestre;
 
+    public CursoDTO() {
+    }
+
+    public CursoDTO(Long id, String nome, Integer qtdSemestre) {
+        this.id = id;
+        this.nome = nome;
+        this.qtdSemestre = qtdSemestre;
+    }
+
     public Long getId() {
         return id;
     }
