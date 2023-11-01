@@ -90,6 +90,4 @@ public class AlunoServiceTest {
     public void tearDown() {
         alunosComIdList.forEach(aluno -> alunoService.deleteAluno(aluno.getId()));
     }
-
-
 }
