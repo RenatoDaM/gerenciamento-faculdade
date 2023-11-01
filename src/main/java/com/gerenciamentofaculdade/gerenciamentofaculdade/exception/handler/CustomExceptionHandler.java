@@ -1,11 +1,8 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.exception.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,12 +13,9 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestControllerAdvice
@@ -69,6 +63,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     protected ResponseEntity<Object> entidadeNaoEncontrada(Exception ex) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse(400,"Bad Request", details);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {EntityExistsException.class})
+    protected ResponseEntity<Object> entidadeJaExistente(Exception ex) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(400,"Bad Request", details);

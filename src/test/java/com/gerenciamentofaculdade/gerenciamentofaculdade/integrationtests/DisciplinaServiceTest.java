@@ -4,6 +4,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.DisciplinaRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.DisciplinaService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -75,7 +76,8 @@ public class DisciplinaServiceTest {
 
     @Test
     @Order(5)
-    public void tearDown() {
+    public void deleteTest() {
         idsToDelete.forEach(id -> disciplinaService.deleteDisciplina(id));
+        idsToDelete.forEach(id -> assertThrows(EntityNotFoundException.class, () -> disciplinaService.getDisciplina(id)));
     }
 }

@@ -67,6 +67,8 @@ public class CursoService {
     }
 
     public void deleteCurso(Long id) {
+        cursoRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Operação não concluída, não foi encontrado um curso com este ID para poder deletar"));
         cursoRepository.deleteById(id);
         log.warn("Deletado curso com ID: {}", id);
     }

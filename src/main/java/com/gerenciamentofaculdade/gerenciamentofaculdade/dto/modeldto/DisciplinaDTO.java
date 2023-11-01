@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Objects;
 
 public class DisciplinaDTO {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
 
     @NotNull(message = "Nome da disciplina não pode ser nulo")

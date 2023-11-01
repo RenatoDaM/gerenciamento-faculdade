@@ -2,10 +2,13 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.NumberFormat;
+
 import java.util.Objects;
 
 public class AlunoDTO {
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.AUTO)
+    @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
 
     @NotNull(message = "RA não pode estar em branco")
@@ -37,6 +40,9 @@ public class AlunoDTO {
         this.email = email;
         this.telefone1 = telefone1;
         this.telefone2 = telefone2;
+    }
+
+    public AlunoDTO() {
     }
 
     public Long getId() {

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class MatriculaDTO {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
 
     @NotNull(message = "Estado da matrícula não pode ser nulo")

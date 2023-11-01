@@ -8,7 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class CursoDTO {
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.AUTO)
+    @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
 
     @NotNull(message = "Nome do curso não pode ser nulo")
