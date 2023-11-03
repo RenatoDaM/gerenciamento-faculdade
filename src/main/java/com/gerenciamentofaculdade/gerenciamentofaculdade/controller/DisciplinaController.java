@@ -1,7 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.DisciplinaService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -40,7 +40,7 @@ public class DisciplinaController {
     }
 
     @PutMapping(value = "{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<DisciplinaDTO> putDisciplina(@PathVariable Long id, @RequestBody @Valid DisciplinaDTO disciplinaDTO) {
+    public ResponseEntity<DisciplinaDTO> putDisciplina(@PathVariable Long id, @RequestBody @Valid DisciplinaDTO disciplinaDTO) throws IllegalAccessException {
         return ResponseEntity.ok().body(disciplinaService.putDisciplina(disciplinaDTO, id));
     }
 

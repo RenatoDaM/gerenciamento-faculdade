@@ -1,8 +1,8 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.ErrorResponse;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,7 +44,7 @@ public interface CursoControllerOpenApi {
             @ApiResponse(description = "Erro servidor", responseCode = "500", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(description = "Tipo de mídia não suportado", responseCode = "415", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Tipo de mídia não suportado ainda", externalValue = "static/api-response-examples/geral/tipo-midia-nao-suportado.json")))
     })
-    public ResponseEntity<CursoDTO> updateCurso(@Valid @RequestBody CursoDTO cursoDTO, @PathVariable Long id);
+    public ResponseEntity<CursoDTO> updateCurso(@Valid @RequestBody CursoDTO cursoDTO, @PathVariable Long id) throws IllegalAccessException;
 
     @Operation(summary = "Deleta um Curso já existente no banco de dados")
     @ApiResponses(value = {

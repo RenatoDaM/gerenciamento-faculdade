@@ -2,8 +2,8 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.ErrorResponse;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,7 +58,7 @@ public interface AlunoControllerOpenApi {
     @Operation(summary = "Deleta um aluno já existente no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(description = "Operação FALHOU. Não foi possível deletar aluno", responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Não foi possível deletar", externalValue = "static/api-response-examples/aluno/delete/erro-ao-deletar.json"))),
-            @ApiResponse(description = "Aluno deletado com sucesso", responseCode = "201", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno deletado com sucesso", externalValue = "static/api-response-examples/aluno/delete/deletado-com-sucesso.json"), schema = @Schema(implementation = Response.class))),
+            @ApiResponse(description = "Aluno deletado com sucesso", responseCode = "200", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Aluno deletado com sucesso", externalValue = "static/api-response-examples/aluno/delete/deletado-com-sucesso.json"), schema = @Schema(implementation = Response.class))),
             @ApiResponse(description = "Erro servidor", responseCode = "500", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Response> deleteAluno(@PathVariable Long id);

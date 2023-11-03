@@ -3,7 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.config.openapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.ErrorResponse;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.slf4j.Logger;

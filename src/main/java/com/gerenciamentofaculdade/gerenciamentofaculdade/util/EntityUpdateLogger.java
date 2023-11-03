@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class EntityUpdateLogger {
     private static final Logger log = LoggerFactory.getLogger(EntityUpdateLogger.class);
-    public static Object id;
+    private static Object id;
 
     public static <T> void loggarModificacoes(T antes, T depois) throws IllegalAccessException {
         Map<String, String> mapAntes = criarMapParaComparacao(antes);
@@ -25,7 +25,7 @@ public class EntityUpdateLogger {
     private static <T> Map<String, String> criarMapParaComparacao(T objeto) throws IllegalAccessException {
         Map<String, String> compare = new HashMap<>();
 
-        // Obtenha campos e valores usando reflexão
+        // peguei campos e valores usando reflexão
         Field[] campos = objeto.getClass().getDeclaredFields();
         for (Field campo : campos) {
             campo.setAccessible(true);

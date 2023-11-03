@@ -1,4 +1,4 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.response;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;

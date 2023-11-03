@@ -6,12 +6,15 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.Disciplina
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.DisciplinaRepository;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class DisciplinaService {
@@ -44,12 +47,14 @@ public class DisciplinaService {
                 .stream().map(DisciplinaMapper.INSTANCE::modelToDTO).toList(), pageable);
     }
 
-    public DisciplinaDTO putDisciplina(DisciplinaDTO disciplinaDTO, Long id) {
-        if (!cursoRepository.existsById(disciplinaDTO.getCursoDTO().getId())) throw new EntityNotFoundException("Não foi encontrado o curso ao qual a disciplina pertence. ID não existente");
+    public DisciplinaDTO putDisciplina(DisciplinaDTO disciplinaDTO, Long id) throws IllegalAccessException {
+        Optional<DisciplinaModel> disciplinaAntesDaAtualizacao = disciplinaRepository.findById(id);
+        if (disciplinaAntesDaAtualizacao.isEmpty()) throw new EntityNotFoundException("Não foi encontrado o curso ao qual a disciplina pertence. ID não existente");
         if (disciplinaRepository.existsByNomeAndCursoModel(disciplinaDTO.getNome(),
                 CursoMapper.INSTANCE.dtoToModel(disciplinaDTO.getCursoDTO()))) throw new EntityExistsException("Já existe uma disciplina com o mesmo nome para este curso");
         disciplinaDTO.setId(id);
         DisciplinaModel savedDisciplina = disciplinaRepository.save(DisciplinaMapper.INSTANCE.dtoToModel(disciplinaDTO));
+        EntityUpdateLogger.loggarModificacoes(disciplinaAntesDaAtualizacao, savedDisciplina);
         return DisciplinaMapper.INSTANCE.modelToDTO(savedDisciplina);
     }
 

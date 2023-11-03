@@ -1,6 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.exception.handler;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ErrorResponse;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.ErrorResponse;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.TypeMismatchException;
@@ -65,8 +65,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> entidadeNaoEncontrada(Exception ex) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(400,"Bad Request", details);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        ErrorResponse error = new ErrorResponse(404,"Not Found", details);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {EntityExistsException.class})

@@ -2,8 +2,10 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.CursoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CursoService {
@@ -50,14 +53,16 @@ public class CursoService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public CursoDTO updateCurso(Long id, CursoDTO cursoDTO) {
+    public CursoDTO updateCurso(Long id, CursoDTO cursoDTO) throws IllegalAccessException {
         cursoDTO.setId(id);
 
         if (cursoRepository.existsCursoModelByNome(cursoDTO.getNome()))
             throw new IllegalArgumentException("Operação não concluída. Já existe um curso com este nome");
 
-        if (cursoRepository.existsById(id)) {
+        Optional<CursoModel> cursoModelAntesDoUpdate = cursoRepository.findById(id);
+        if (cursoModelAntesDoUpdate.isPresent()) {
             cursoRepository.save(CursoMapper.INSTANCE.dtoToModel(cursoDTO));
+            EntityUpdateLogger.loggarModificacoes(cursoModelAntesDoUpdate.get(), cursoRepository.save(CursoMapper.INSTANCE.dtoToModel(cursoDTO)));
             log.info("Atualizado curso com o ID: {}", id);
         } else {
             throw new EntityNotFoundException("Operação não concluída. Não foi possível atualizar pois não foi encontrado um curso com este ID no banco de dados");

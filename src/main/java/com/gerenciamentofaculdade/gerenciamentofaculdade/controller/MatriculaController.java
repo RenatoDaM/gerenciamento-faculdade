@@ -2,7 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.MatriculaControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.MatriculaService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -42,7 +42,7 @@ public class MatriculaController implements MatriculaControllerOpenApi {
     }
 
     @PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Long id) {
+    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Long id) throws IllegalAccessException {
         return ResponseEntity.status(HttpStatus.OK).body(matriculaService.updateMatricula(matriculaDTO, id));
     }
 

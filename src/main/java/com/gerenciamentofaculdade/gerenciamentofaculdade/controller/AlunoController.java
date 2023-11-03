@@ -3,7 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.response.Response;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.AlunoService;
 import io.swagger.v3.oas.annotations.Parameter;

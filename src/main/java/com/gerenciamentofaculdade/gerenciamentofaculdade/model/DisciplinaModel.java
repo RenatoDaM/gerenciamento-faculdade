@@ -3,6 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "disciplina")
 @Table(name = "disciplina")

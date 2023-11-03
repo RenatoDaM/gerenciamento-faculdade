@@ -6,6 +6,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.model.MatriculaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.MatriculaRepository;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Service
 public class MatriculaService {
@@ -55,14 +57,16 @@ public class MatriculaService {
     }
 
     @Transactional
-    public MatriculaDTO updateMatricula(MatriculaDTO matriculaDTO, Long id) {
+    public MatriculaDTO updateMatricula(MatriculaDTO matriculaDTO, Long id) throws IllegalAccessException {
+        Optional<MatriculaModel> matriculaAntesDaAtualizacao = matriculaRepository.findById(id);
         if (alunoRepository.findById(matriculaDTO.getAlunoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
         if (cursoRepository.findById(matriculaDTO.getCursoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
-
+        if (matriculaAntesDaAtualizacao.isEmpty()) throw new EntityNotFoundException("Não foi encontrada uma matrícula com este ID para poder atualizar");
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
         matriculaModel.setId(id);
         matriculaRepository.save(matriculaModel);
         log.info("Atualizada matrícula com ID: {}", id);
+        EntityUpdateLogger.loggarModificacoes(matriculaAntesDaAtualizacao, matriculaModel);
         matriculaDTO.setId(id);
         return matriculaDTO;
     }
