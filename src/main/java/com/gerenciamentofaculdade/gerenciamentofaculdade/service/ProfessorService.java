@@ -11,6 +11,10 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.model.ProfessorModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.ProfessorLecionaDisciplinaRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.ProfessorRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.ProfessorLecionaResponse;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,10 +25,13 @@ import java.util.stream.Collectors;
 public class ProfessorService {
     private final ProfessorRepository professorRepository;
     private final ProfessorLecionaDisciplinaRepository professorLecionaDisciplinaRepository;
+    private final ProfessorMapper professorMapper;
 
-    public ProfessorService(ProfessorRepository professorRepository, DisciplinaRepository disciplinaRepository, ProfessorLecionaDisciplinaRepository professorLecionaDisciplinaRepository) {
+    public ProfessorService(ProfessorRepository professorRepository, DisciplinaRepository disciplinaRepository, ProfessorLecionaDisciplinaRepository professorLecionaDisciplinaRepository,
+                            ProfessorMapper professorMapper) {
         this.professorRepository = professorRepository;
         this.professorLecionaDisciplinaRepository = professorLecionaDisciplinaRepository;
+        this.professorMapper = professorMapper;
     }
 
     public ProfessorDTO postProfessor(ProfessorDTO professorDTO) {
@@ -32,6 +39,31 @@ public class ProfessorService {
         return ProfessorMapper.INSTANCE.modelToDTO(savedEntity);
     }
 
+    public ProfessorDTO getProfessor(Long id) {
+        return ProfessorMapper.INSTANCE.modelToDTO(professorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um professor com o ID " + id)));
+    }
+
+    public Page<ProfessorDTO> getAllProfessores(Pageable pageable) {
+        return PaginationUtils.paginarLista(professorRepository.findAll().stream()
+                .map(professorMapper::modelToDTO).collect(Collectors.toList()), pageable);
+    }
+
+    public ProfessorDTO putProfessor(Long id, ProfessorDTO professorDTO) {
+        professorDTO.setId(id);
+        var persistedProfessor = professorRepository.save(professorMapper.dtoToModel(professorDTO));
+        return professorMapper.modelToDTO(persistedProfessor);
+    }
+
+    public void deleteProfessor(Long id) {
+        if (professorRepository.existsById(id)) {
+            professorRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Não foi encontrado um professor com este ID para poder deletar.");
+        }
+    }
+
+    // vinculo disciplina-professor
     public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) {
         professorLecionaDisciplinaRepository.save(ProfessorLecionaMapper.INSTANCE.dtoToModel(professorLecionaRequest));
         ProfessorLecionaResponse result = new ProfessorLecionaResponse();
