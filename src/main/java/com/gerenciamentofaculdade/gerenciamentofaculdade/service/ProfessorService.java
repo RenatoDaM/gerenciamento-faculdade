@@ -1,10 +1,9 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.DisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorLecionaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HorarioAulaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.ProfessorDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.exception.ConflitoHorarioException;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.request.ProfessorLecionaRequest;
@@ -73,7 +72,7 @@ public class ProfessorService {
 
     // vinculo disciplina-professor
     @Transactional
-    public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) throws Exception {
+    public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) throws ConflitoHorarioException {
         ProfessorModel professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId())
                 .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor com o respectivo ID"));
 
@@ -82,7 +81,7 @@ public class ProfessorService {
 
         // Checa se o professor possui conflito de tempo para lecionar a disciplina, ou seja, se já leciona outra disciplina neste horário
         if (professorLecionaHorarioRepository.hasTimeConflict(professorLecionaRequest.getRelacao().getProfessorId(), professorLecionaRequest.getDiaSemana(), professorLecionaRequest.getHorarioInicio(), professorLecionaRequest.getHorarioFim()))
-            throw new EntityNotFoundException("Conflito de tempo");
+            throw new ConflitoHorarioException("Conflito de horário. Este professor já leciona outra disciplina neste horário.");
 
         // Crio vínculo professor-leciona
         var professorLecionaDisciplinaModel = professorLecionaDisciplinaRepository.save(new ProfessorLecionaDisciplinaModel(professorLecionaRequest.getRelacao(), professorModel,
