@@ -28,10 +28,11 @@ public class ProfessorLecionaResponse {
     public ProfessorLecionaResponse() {
     }
 
-    public ProfessorLecionaResponse(Long id, String nome, String registroConselho) {
+    public ProfessorLecionaResponse(Long id, String nome, String registroConselho, List<DisciplinaDTO> disciplinasList) {
         this.id = id;
         this.nome = nome;
         this.registroConselho = registroConselho;
+        this.disciplinasList = disciplinasList;
     }
 
     @Override

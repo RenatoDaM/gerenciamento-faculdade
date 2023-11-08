@@ -20,6 +20,8 @@ import java.util.*;
 
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+/*
     @ExceptionHandler(value = {Exception.class})
     public final ResponseEntity<Object> handleAllExceptions(Exception ex) {
         List<String> details = new ArrayList<>();
@@ -27,6 +29,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse error = new ErrorResponse(500,"Erro Servidor", details);
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+*/
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

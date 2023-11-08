@@ -14,6 +14,14 @@ public class ProfessorLecionaDisciplinaKey implements Serializable {
     @Column(name = "disciplina_id")
     Long disciplinaId;
 
+    public ProfessorLecionaDisciplinaKey() {
+    }
+
+    public ProfessorLecionaDisciplinaKey(Long professorId, Long disciplinaId) {
+        this.professorId = professorId;
+        this.disciplinaId = disciplinaId;
+    }
+
     public Long getProfessorId() {
         return professorId;
     }

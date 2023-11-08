@@ -1,7 +1,12 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.DiaDaSemanaEnum;
 import jakarta.persistence.*;
+
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "professor_leciona_disciplina")
@@ -21,24 +26,30 @@ public class ProfessorLecionaDisciplinaModel {
     @JoinColumn(name = "disciplina_id")
     DisciplinaModel disciplinaModel;
 
-    @Column
-    Integer diaLecionado;
+    @OneToMany(mappedBy = "professorLecionaDisciplinaModel", cascade = CascadeType.ALL)
+    List<ProfessorLecionaHorarioModel> professorLecionaHorarioList;
 
-    @Temporal(TemporalType.TIME)
-    @Column(nullable = false, columnDefinition = "date")
-    LocalTime horario;
+
+    public ProfessorLecionaDisciplinaModel() {
+    }
+
+    public ProfessorLecionaDisciplinaModel(ProfessorLecionaDisciplinaKey key, ProfessorModel professorModel, DisciplinaModel disciplinaModel) {
+        this.key = key;
+        this.professorModel = professorModel;
+        this.disciplinaModel = disciplinaModel;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProfessorLecionaDisciplinaModel that = (ProfessorLecionaDisciplinaModel) o;
-        return Objects.equals(key, that.key) && Objects.equals(professorModel, that.professorModel) && Objects.equals(disciplinaModel, that.disciplinaModel) && Objects.equals(diaLecionado, that.diaLecionado) && Objects.equals(horario, that.horario);
+        return Objects.equals(key, that.key) && Objects.equals(professorModel, that.professorModel) && Objects.equals(disciplinaModel, that.disciplinaModel) && Objects.equals(professorLecionaHorarioList, that.professorLecionaHorarioList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, professorModel, disciplinaModel, diaLecionado, horario);
+        return Objects.hash(key, professorModel, disciplinaModel, professorLecionaHorarioList);
     }
 
     public ProfessorLecionaDisciplinaKey getKey() {
@@ -65,19 +76,12 @@ public class ProfessorLecionaDisciplinaModel {
         this.disciplinaModel = disciplinaModel;
     }
 
-    public Integer getDiaLecionado() {
-        return diaLecionado;
+
+    public List<ProfessorLecionaHorarioModel> getProfessorLecionaHorarioList() {
+        return professorLecionaHorarioList;
     }
 
-    public void setDiaLecionado(Integer diaLecionado) {
-        this.diaLecionado = diaLecionado;
-    }
-
-    public LocalTime getHorario() {
-        return horario;
-    }
-
-    public void setHorario(LocalTime horario) {
-        this.horario = horario;
+    public void setProfessorLecionaHorarioList(List<ProfessorLecionaHorarioModel> professorLecionaHorarioList) {
+        this.professorLecionaHorarioList = professorLecionaHorarioList;
     }
 }

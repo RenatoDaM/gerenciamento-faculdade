@@ -21,6 +21,15 @@ public class ProfessorModel {
         return id;
     }
 
+    public ProfessorModel() {
+    }
+
+    public ProfessorModel(Long id, String nome, String registroConselho) {
+        this.id = id;
+        this.nome = nome;
+        this.registroConselho = registroConselho;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
