@@ -3,6 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.DisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorLecionaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HorarioAulaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.ProfessorDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
@@ -72,37 +73,41 @@ public class ProfessorService {
 
     // vinculo disciplina-professor
     @Transactional
-    public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) {
-        // DIVIDIR A LÓGICA DE ADICIONAR HORÁRIO !!!!!!
-        // Se não existir o horário cria, se não usa o já criado, e então relaciona ProfessorLecionaHorarioModel com HorarioModel !!!
+    public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) throws Exception {
+        ProfessorModel professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId())
+                .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor com o respectivo ID"));
 
-        var professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId()).orElse(null);
-        var disciplinaModel = disciplinaRepository.findById(professorLecionaRequest.getRelacao().getDisciplinaId()).orElse(null);
+        DisciplinaModel disciplinaModel = disciplinaRepository.findById(professorLecionaRequest.getRelacao().getDisciplinaId())
+                .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrada uma disciplina com o respectivo ID"));
 
-        if (professorModel != null && disciplinaModel != null) {
-            var model = new ProfessorLecionaDisciplinaModel(professorLecionaRequest.getRelacao(), professorModel,
-                    disciplinaModel);
+        // Checa se o professor possui conflito de tempo para lecionar a disciplina, ou seja, se já leciona outra disciplina neste horário
+        if (professorLecionaHorarioRepository.hasTimeConflict(professorLecionaRequest.getRelacao().getProfessorId(), professorLecionaRequest.getDiaSemana(), professorLecionaRequest.getHorarioInicio(), professorLecionaRequest.getHorarioFim()))
+            throw new EntityNotFoundException("Conflito de tempo");
 
-            var modelResult1 = professorLecionaDisciplinaRepository.save(model);
-            var horarioAula = new HorarioAulaModel();
-            horarioAula.setHorarioFim(professorLecionaRequest.getHorarioFim());
-            horarioAula.setHorarioInicio(professorLecionaRequest.getHorarioInicio());
-            horarioAula.setDiaSemana(professorLecionaRequest.getDiaSemana());
-            horarioAulaRepository.save(horarioAula);
+        // Crio vínculo professor-leciona
+        var professorLecionaDisciplinaModel = professorLecionaDisciplinaRepository.save(new ProfessorLecionaDisciplinaModel(professorLecionaRequest.getRelacao(), professorModel,
+                disciplinaModel));
 
-            var horarioProfessor = new ProfessorLecionaHorarioModel();
-            horarioProfessor.setHorarioAulaModel(horarioAula);
-            horarioProfessor.setProfessorLecionaDisciplinaModel(modelResult1);
+        // Produro no banco de dados um horário condizente com o da request
+        var horarioAulaPersisted = horarioAulaRepository.findByDiaSemanaAndHorarioInicioAndHorarioFim(professorLecionaRequest
+                .getDiaSemana(), professorLecionaRequest.getHorarioInicio(), professorLecionaRequest.getHorarioFim());
 
-            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
-            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
-            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
+        var horarioProfessor = new ProfessorLecionaHorarioModel();
+        horarioProfessor.setProfessorLecionaDisciplinaModel(professorLecionaDisciplinaModel);
 
-            professorLecionaHorarioRepository.save(horarioProfessor);
-            return new ProfessorLecionaResponse(professorLecionaRequest.getRelacao(), disciplinaModel, horarioAula);
+        // Caso tenha encontrado um horario e dia condizente
+        if (horarioAulaPersisted.isPresent()) {
+            horarioProfessor.setHorarioAulaModel(horarioAulaPersisted.get());
         } else {
-            throw new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor ou aluno com o respectivo ID");
+            // Caso não, eu crio no banco de dados
+            horarioProfessor.setHorarioAulaModel(horarioAulaRepository.save(new HorarioAulaModel(professorLecionaRequest.getDiaSemana(),
+                    professorLecionaRequest.getHorarioInicio(), professorLecionaRequest.getHorarioFim())));
         }
+
+        // Persisto na tabela muitos pra muitos, que relaciona ProfessorLecionaDisciplina com HorarioAula
+        professorLecionaHorarioRepository.save(horarioProfessor);
+        return new ProfessorLecionaResponse(professorLecionaRequest.getRelacao(), disciplinaModel, horarioProfessor.getHorarioAulaModel());
+
     }
 
     public List<ProfessorLecionaResponse> getDisciplinasVinculadas(Long id) {

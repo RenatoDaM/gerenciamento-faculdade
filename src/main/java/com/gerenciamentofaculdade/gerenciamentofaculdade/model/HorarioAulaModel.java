@@ -30,6 +30,15 @@ public class HorarioAulaModel {
     @OneToMany(mappedBy = "horarioAulaModel")
     List<ProfessorLecionaHorarioModel> professorLecionaHorarioList;
 
+    public HorarioAulaModel() {
+    }
+
+    public HorarioAulaModel(DiaDaSemanaEnum diaSemana, LocalTime horarioInicio, LocalTime horarioFim) {
+        this.diaSemana = diaSemana;
+        this.horarioInicio = horarioInicio;
+        this.horarioFim = horarioFim;
+    }
+
     public Long getId() {
         return id;
     }
