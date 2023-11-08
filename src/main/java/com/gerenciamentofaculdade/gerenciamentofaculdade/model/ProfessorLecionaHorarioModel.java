@@ -2,6 +2,8 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity(name = "professor_leciona_horario")
 @Table(name = "professor_leciona_horario")
 public class ProfessorLecionaHorarioModel {
@@ -16,9 +18,25 @@ public class ProfessorLecionaHorarioModel {
     })
     private ProfessorLecionaDisciplinaModel professorLecionaDisciplinaModel;
 
+
     @ManyToOne
     @JoinColumn(name="horario_aula_id", nullable = false)
     private HorarioAulaModel horarioAulaModel;
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProfessorLecionaHorarioModel that = (ProfessorLecionaHorarioModel) o;
+        return Objects.equals(id, that.id) && Objects.equals(professorLecionaDisciplinaModel, that.professorLecionaDisciplinaModel) && Objects.equals(horarioAulaModel, that.horarioAulaModel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, professorLecionaDisciplinaModel, horarioAulaModel);
+    }
 
     public Long getId() {
         return id;

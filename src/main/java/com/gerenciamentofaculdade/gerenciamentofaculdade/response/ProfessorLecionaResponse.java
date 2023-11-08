@@ -1,82 +1,121 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.DisciplinaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.HorarioAulaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HorarioAulaDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.DiaDaSemanaEnum;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HorarioAulaModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.ProfessorLecionaDisciplinaKey;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ProfessorLecionaResponse {
-    @Positive(message = "Valor de ID deve ser numérico e positivo")
-    private Long id;
+    ProfessorLecionaDisciplinaKey relacao;
+    Long disciplinaId;
+    String nomeDisciplina;
+    Integer cargaHoraria;
+    CursoDTO curso;
+    DiaDaSemanaEnum diaDaSemana;
 
-    @NotBlank(message = "Nome não pode estar em branco")
-    @NotNull(message = "Nome não pode ser nulo")
-    @NotEmpty(message = "Nome não pode estar vazio")
-    private String nome;
+    /*DisciplinaDTO disciplinaDTO;
 
-    @NotBlank(message = "Registro de conselho não pode estar em branco")
-    @NotNull(message = "Registro de conselho não pode ser nulo")
-    @NotEmpty(message = "Registro de conselho não pode estar vazio")
-    private String registroConselho;
-
-    List<DisciplinaDTO> disciplinasList;
+    HorarioAulaDTO horarioAulaDTO;*/
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    LocalTime horarioInicio;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    LocalTime horarioFim;
 
     public ProfessorLecionaResponse() {
     }
 
     public ProfessorLecionaResponse(Long id, String nome, String registroConselho, List<DisciplinaDTO> disciplinasList) {
-        this.id = id;
-        this.nome = nome;
-        this.registroConselho = registroConselho;
-        this.disciplinasList = disciplinasList;
+
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProfessorLecionaResponse that = (ProfessorLecionaResponse) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(registroConselho, that.registroConselho);
+    public ProfessorLecionaResponse(ProfessorLecionaDisciplinaKey relacao, DisciplinaModel disciplinaModel, HorarioAulaModel horarioAulaModel) {
+        this.relacao = relacao;
+        this.nomeDisciplina = disciplinaModel.getNome();
+        this.cargaHoraria = disciplinaModel.getCargaHoraria();
+        this.curso = CursoMapper.INSTANCE.modelToDTO(disciplinaModel.getCursoModel());
+        this.horarioInicio = horarioAulaModel.getHorarioInicio();
+        this.horarioFim = horarioAulaModel.getHorarioFim();
+        this.diaDaSemana = horarioAulaModel.getDiaSemana();
+        this.disciplinaId = disciplinaModel.getId();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, registroConselho);
+    public Long getDisciplinaId() {
+        return disciplinaId;
     }
 
-    public Long getId() {
-        return id;
+    public void setDisciplinaId(Long disciplinaId) {
+        this.disciplinaId = disciplinaId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getNomeDisciplina() {
+        return nomeDisciplina;
     }
 
-    public String getNome() {
-        return nome;
+    public void setNomeDisciplina(String nomeDisciplina) {
+        this.nomeDisciplina = nomeDisciplina;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public Integer getCargaHoraria() {
+        return cargaHoraria;
     }
 
-    public String getRegistroConselho() {
-        return registroConselho;
+    public void setCargaHoraria(Integer cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
     }
 
-    public void setRegistroConselho(String registroConselho) {
-        this.registroConselho = registroConselho;
+    public CursoDTO getCurso() {
+        return curso;
     }
 
-    public List<DisciplinaDTO> getDisciplinasList() {
-        return disciplinasList;
+    public void setCurso(CursoDTO curso) {
+        this.curso = curso;
     }
 
-    public void setDisciplinasList(List<DisciplinaDTO> disciplinasList) {
-        this.disciplinasList = disciplinasList;
+    public DiaDaSemanaEnum getDiaDaSemana() {
+        return diaDaSemana;
+    }
+
+    public void setDiaDaSemana(DiaDaSemanaEnum diaDaSemana) {
+        this.diaDaSemana = diaDaSemana;
+    }
+
+    public LocalTime getHorarioInicio() {
+        return horarioInicio;
+    }
+
+    public void setHorarioInicio(LocalTime horarioInicio) {
+        this.horarioInicio = horarioInicio;
+    }
+
+    public LocalTime getHorarioFim() {
+        return horarioFim;
+    }
+
+    public void setHorarioFim(LocalTime horarioFim) {
+        this.horarioFim = horarioFim;
+    }
+
+    public ProfessorLecionaDisciplinaKey getRelacao() {
+        return relacao;
+    }
+
+    public void setRelacao(ProfessorLecionaDisciplinaKey relacao) {
+        this.relacao = relacao;
     }
 }

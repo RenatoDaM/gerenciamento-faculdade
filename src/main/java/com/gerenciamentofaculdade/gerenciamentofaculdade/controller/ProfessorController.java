@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @CrossOrigin(origins = "*")
 @RestController
@@ -63,14 +65,14 @@ public class ProfessorController {
     }
 
     @GetMapping(value = "/leciona/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProfessorLecionaResponse> getVinculoDisciplina(@PathVariable Long id) {
+    public ResponseEntity<List<ProfessorLecionaResponse>> getVinculoDisciplina(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(professorService.getDisciplinasVinculadas(id));
     }
 
-    @GetMapping(value = "/leciona", produces = {MediaType.APPLICATION_JSON_VALUE})
+/*    @GetMapping(value = "/leciona", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Page<ProfessorLecionaResponse> getAllVinculoDisciplina(@PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
         return professorService.getAllProfessorLecionaDisciplina(pageable);
-    }
+    }*/
 
 /*
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})

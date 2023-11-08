@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +73,9 @@ public class ProfessorService {
     // vinculo disciplina-professor
     @Transactional
     public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) {
+        // DIVIDIR A LÓGICA DE ADICIONAR HORÁRIO !!!!!!
+        // Se não existir o horário cria, se não usa o já criado, e então relaciona ProfessorLecionaHorarioModel com HorarioModel !!!
+
         var professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId()).orElse(null);
         var disciplinaModel = disciplinaRepository.findById(professorLecionaRequest.getRelacao().getDisciplinaId()).orElse(null);
 
@@ -91,30 +93,23 @@ public class ProfessorService {
             var horarioProfessor = new ProfessorLecionaHorarioModel();
             horarioProfessor.setHorarioAulaModel(horarioAula);
             horarioProfessor.setProfessorLecionaDisciplinaModel(modelResult1);
+
+            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
+            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
+            // PRECISA FAZER TRATAMENTO PARA NÃO PERMITIR DUPLICAÇÃO!!!!!!!!!!!!!
+
             professorLecionaHorarioRepository.save(horarioProfessor);
-            return new ProfessorLecionaResponse(model.getProfessorModel().getId(), model.getProfessorModel().getNome(),
-                    model.getProfessorModel().getRegistroConselho(), List.of(DisciplinaMapper.INSTANCE.modelToDTO(disciplinaModel)));
+            return new ProfessorLecionaResponse(professorLecionaRequest.getRelacao(), disciplinaModel, horarioAula);
         } else {
             throw new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor ou aluno com o respectivo ID");
         }
     }
 
-    public ProfessorLecionaResponse getDisciplinasVinculadas(Long id) {
-        var response = new ProfessorLecionaResponse();
-        var professor = professorRepository.findById(id);
-        if (professor.isPresent()) {
-            response.setDisciplinasList(professorLecionaDisciplinaRepository.findDisciplinasByProfessorId(id)
-                    .stream().map(DisciplinaMapper.INSTANCE::modelToDTO).collect(Collectors.toList()));
-
-            response.setNome(professor.get().getNome());
-            response.setRegistroConselho(professor.get().getRegistroConselho());
-            response.setId(professor.get().getId());
-        }
-
-        return response;
+    public List<ProfessorLecionaResponse> getDisciplinasVinculadas(Long id) {
+        return professorLecionaDisciplinaRepository.returnHorariosAndDisciplinas(id);
     }
 
-    public Page<ProfessorLecionaResponse> getAllProfessorLecionaDisciplina(Pageable pageable) {
+    /*public Page<ProfessorLecionaResponse> getAllProfessorLecionaDisciplina(Pageable pageable) {
         var professores = professorRepository.findAll();
         List<ProfessorLecionaResponse> response = new ArrayList<>();
 
@@ -128,7 +123,7 @@ public class ProfessorService {
         });
 
         return PaginationUtils.paginarLista(response, pageable);
-    }
+    }*/
 
     @Transactional
     public void deleteProfessorLeciona(Long professorId, Long disciplinaId) {
