@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,8 @@ public class ProfessorService {
     // vinculo disciplina-professor
     @Transactional
     public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) throws ConflitoHorarioException {
+        // !!! PRECISA VERIFICAR AINDA SE HORÁRIO INICIO É ANTES DE HORÁRIO FIM !!!
+
         ProfessorModel professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId())
                 .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor com o respectivo ID"));
 
@@ -109,25 +112,20 @@ public class ProfessorService {
 
     }
 
-    public List<ProfessorLecionaResponse> getDisciplinasVinculadas(Long id) {
+    public List<ProfessorLecionaResponse> getDisciplinasVinculadasPorProfessorId(Long id) {
         return professorLecionaDisciplinaRepository.returnHorariosAndDisciplinas(id);
     }
 
-    /*public Page<ProfessorLecionaResponse> getAllProfessorLecionaDisciplina(Pageable pageable) {
+    public Page<ProfessorLecionaResponse> getAllProfessorLecionaDisciplina(Pageable pageable) {
         var professores = professorRepository.findAll();
         List<ProfessorLecionaResponse> response = new ArrayList<>();
 
         professores.forEach(professor -> {
-            var professorLeciona = new ProfessorLecionaResponse();
-            professorLeciona.setNome(professor.getNome());
-            professorLeciona.setId(professor.getId());
-            professorLeciona.setRegistroConselho(professor.getRegistroConselho());
-            professorLeciona.setDisciplinasList(professorLecionaDisciplinaRepository.findDisciplinasByProfessorId(professor.getId()).stream().map(DisciplinaMapper.INSTANCE::modelToDTO).collect(Collectors.toList()));
-            response.add(professorLeciona);
+            response.addAll(professorLecionaDisciplinaRepository.returnHorariosAndDisciplinas(professor.getId()));
         });
 
         return PaginationUtils.paginarLista(response, pageable);
-    }*/
+    }
 
     @Transactional
     public void deleteProfessorLeciona(Long professorId, Long disciplinaId) {

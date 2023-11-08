@@ -47,12 +47,12 @@ public class ProfessorController {
     }
 
     @PutMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProfessorDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody ProfessorDTO professorDTO) throws Exception {
+    public ResponseEntity<ProfessorDTO> updateProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorDTO professorDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(professorService.putProfessor(id, professorDTO));
     }
 
     @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Response> deleteAluno(@PathVariable Long id) {
+    public ResponseEntity<Response> deleteProfessor(@PathVariable Long id) {
         professorService.deleteProfessor(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Professor com ID: " + id + " deletado com sucesso."));
     }
@@ -66,13 +66,13 @@ public class ProfessorController {
 
     @GetMapping(value = "/leciona/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<ProfessorLecionaResponse>> getVinculoDisciplina(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(professorService.getDisciplinasVinculadas(id));
+        return ResponseEntity.status(HttpStatus.OK).body(professorService.getDisciplinasVinculadasPorProfessorId(id));
     }
 
-/*    @GetMapping(value = "/leciona", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/leciona", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Page<ProfessorLecionaResponse> getAllVinculoDisciplina(@PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
         return professorService.getAllProfessorLecionaDisciplina(pageable);
-    }*/
+    }
 
 /*
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -82,7 +82,7 @@ public class ProfessorController {
 */
 
     @DeleteMapping(value = "/leciona/{professorId}/{disciplinaId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Response> deleteAluno(@PathVariable Long professorId, @PathVariable Long disciplinaId) {
+    public ResponseEntity<Response> deleteVinculoDisciplina(@PathVariable Long professorId, @PathVariable Long disciplinaId) {
         professorService.deleteProfessorLeciona(professorId, disciplinaId);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Relação deletada com sucesso."));
     }
