@@ -38,6 +38,9 @@ public class MatriculaService {
         if (cursoRepository.findById(matriculaDTO.getCursoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
         if (alunoRepository.findById(matriculaDTO.getAlunoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
 
+        // possívelmente criar no sistema automaticamente que cadastra o aluno com historicoDisciplina do primeiro semestre,
+        // podendo alterar depois. Próximos semestres o aluno que escolhe.
+
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
         matriculaDTO.setId(matriculaRepository.save(matriculaModel).getId());
         log.info("Persistida matrícula com ID: {}", matriculaDTO.getId());

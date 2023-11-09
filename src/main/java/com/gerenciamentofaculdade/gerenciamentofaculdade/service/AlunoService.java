@@ -4,6 +4,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.AlunoMapp
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.HistoricoAlunoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
@@ -21,14 +22,16 @@ import java.util.*;
 @Service
 public class AlunoService {
     private final AlunoRepository alunoRepository;
+    private final HistoricoAlunoRepository historicoAlunoRepository;
     private final Logger log = LoggerFactory.getLogger(AlunoService.class);
 
-    public AlunoService(AlunoRepository alunoRepository) {
+    public AlunoService(AlunoRepository alunoRepository, HistoricoAlunoRepository historicoAlunoRepository) {
         this.alunoRepository = alunoRepository;
+        this.historicoAlunoRepository = historicoAlunoRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public AlunoDTO postAluno(AlunoDTO aluno) throws Exception {
+    public AlunoDTO postAluno(AlunoDTO aluno) {
         if (alunoRepository.findByRa(aluno.getRa()).isPresent()) {
             log.warn("Não foi possível persistir aluno, pois foi inserido um RA já existente");
             throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este RA");
@@ -88,5 +91,6 @@ public class AlunoService {
         alunoRepository.deleteById(id);
         log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
     }
+
 
 }
