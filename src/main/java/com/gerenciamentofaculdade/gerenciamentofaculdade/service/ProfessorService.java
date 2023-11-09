@@ -74,13 +74,15 @@ public class ProfessorService {
     // vinculo disciplina-professor
     @Transactional
     public ProfessorLecionaResponse vincularDisciplinaAoProfessor(ProfessorLecionaRequest professorLecionaRequest) throws ConflitoHorarioException {
-        // !!! PRECISA VERIFICAR AINDA SE HORÁRIO INICIO É ANTES DE HORÁRIO FIM !!!
+        if (!professorLecionaRequest.getHorarioInicio().isBefore(professorLecionaRequest.getHorarioFim()))
+            throw new ConflitoHorarioException("Horário de inicio não pode ser depois do horário final");
 
         ProfessorModel professorModel = professorRepository.findById(professorLecionaRequest.getRelacao().getProfessorId())
                 .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrado um professor com o respectivo ID"));
 
         DisciplinaModel disciplinaModel = disciplinaRepository.findById(professorLecionaRequest.getRelacao().getDisciplinaId())
                 .orElseThrow(() -> new EntityNotFoundException("Operação FALHOU. Não foi encontrada uma disciplina com o respectivo ID"));
+
 
         // Checa se o professor possui conflito de tempo para lecionar a disciplina, ou seja, se já leciona outra disciplina neste horário
         if (professorLecionaHorarioRepository.hasTimeConflict(professorLecionaRequest.getRelacao().getProfessorId(), professorLecionaRequest.getDiaSemana(), professorLecionaRequest.getHorarioInicio(), professorLecionaRequest.getHorarioFim()))

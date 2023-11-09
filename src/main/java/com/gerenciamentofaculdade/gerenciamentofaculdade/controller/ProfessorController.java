@@ -74,9 +74,10 @@ public class ProfessorController {
         return professorService.getAllProfessorLecionaDisciplina(pageable);
     }
 
+    // Acredito que não precise de update até o momento.
 /*
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProfessorDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody ProfessorDTO professorDTO) throws Exception {
+    public ResponseEntity<ProfessorDTO> updateProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorDTO professorDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(professorService.putProfessor(id, professorDTO));
     }
 */
