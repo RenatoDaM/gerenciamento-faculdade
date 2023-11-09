@@ -2,6 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "professor")
@@ -16,6 +17,9 @@ public class ProfessorModel {
 
     @Column(unique = true, nullable = false, length = 30)
     private String registroConselho;
+
+    @OneToMany(mappedBy = "professorModel")
+    private List<HistoricoAlunoModel> historicoAlunoModelList;
 
     public Long getId() {
         return id;
@@ -48,5 +52,13 @@ public class ProfessorModel {
 
     public void setRegistroConselho(String registroConselho) {
         this.registroConselho = registroConselho;
+    }
+
+    public List<HistoricoAlunoModel> getHistoricoAlunoModelList() {
+        return historicoAlunoModelList;
+    }
+
+    public void setHistoricoAlunoModelList(List<HistoricoAlunoModel> historicoAlunoModelList) {
+        this.historicoAlunoModelList = historicoAlunoModelList;
     }
 }

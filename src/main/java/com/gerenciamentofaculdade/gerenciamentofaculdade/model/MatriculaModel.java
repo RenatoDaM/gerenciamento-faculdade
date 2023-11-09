@@ -3,6 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoMatriculaEnum;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "matricula")
@@ -31,6 +32,9 @@ public class MatriculaModel {
     @ManyToOne
     @JoinColumn(name="curso_id", nullable = false)
     private CursoModel cursoModel;
+
+    @OneToMany(mappedBy = "matriculaModel")
+    private List<HistoricoAlunoModel> historicoAlunoModelList;
 
     @Override
     public String toString() {
@@ -90,6 +94,18 @@ public class MatriculaModel {
 
     public void setCursoModel(CursoModel cursoModel) {
         this.cursoModel = cursoModel;
+    }
+
+    public void setEstadoMatricula(EstadoMatriculaEnum estadoMatricula) {
+        this.estadoMatricula = estadoMatricula;
+    }
+
+    public List<HistoricoAlunoModel> getHistoricoAlunoModelList() {
+        return historicoAlunoModelList;
+    }
+
+    public void setHistoricoAlunoModelList(List<HistoricoAlunoModel> historicoAlunoModelList) {
+        this.historicoAlunoModelList = historicoAlunoModelList;
     }
 
     @Override

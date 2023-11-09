@@ -2,6 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,6 +22,9 @@ public class DisciplinaModel {
     @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
     private CursoModel cursoModel;
+
+    @ManyToMany(mappedBy = "disciplinaModelList")
+    private List<HistoricoAlunoModel> historicoAlunoModelList;
 
     public Long getId() {
         return id;
@@ -65,5 +69,13 @@ public class DisciplinaModel {
     @Override
     public int hashCode() {
         return Objects.hash(id, nome, cargaHoraria, cursoModel);
+    }
+
+    public List<HistoricoAlunoModel> getHistoricoAlunoModelList() {
+        return historicoAlunoModelList;
+    }
+
+    public void setHistoricoAlunoModelList(List<HistoricoAlunoModel> historicoAlunoModelList) {
+        this.historicoAlunoModelList = historicoAlunoModelList;
     }
 }
