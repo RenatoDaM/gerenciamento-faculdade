@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "disciplina")
 @Table(name = "disciplina")
@@ -23,8 +22,8 @@ public class DisciplinaModel {
     @JoinColumn(name = "curso_id", nullable = false)
     private CursoModel cursoModel;
 
-    @ManyToMany(mappedBy = "disciplinaModelList")
-    private List<HistoricoAlunoModel> historicoAlunoModelList;
+    @OneToMany(mappedBy = "disciplinaModel")
+    private List<HistoricoDisciplinaModel> historicoDisciplinaModelList;
 
     public Long getId() {
         return id;
@@ -71,11 +70,11 @@ public class DisciplinaModel {
         return Objects.hash(id, nome, cargaHoraria, cursoModel);
     }
 
-    public List<HistoricoAlunoModel> getHistoricoAlunoModelList() {
-        return historicoAlunoModelList;
+    public List<HistoricoDisciplinaModel> getHistoricoDisciplinaList() {
+        return historicoDisciplinaModelList;
     }
 
-    public void setHistoricoAlunoModelList(List<HistoricoAlunoModel> historicoAlunoModelList) {
-        this.historicoAlunoModelList = historicoAlunoModelList;
+    public void setHistoricoDisciplinaList(List<HistoricoDisciplinaModel> historicoDisciplinaModelList) {
+        this.historicoDisciplinaModelList = historicoDisciplinaModelList;
     }
 }

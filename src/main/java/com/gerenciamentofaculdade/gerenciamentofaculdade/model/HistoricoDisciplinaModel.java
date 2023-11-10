@@ -1,13 +1,16 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 
+import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoDisciplinaEnum;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.PeriodoEnum;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.List;
+import java.time.YearMonth;
+import java.util.Date;
 
-@Entity(name = "historico_aluno")
-@Table(name = "historico_aluno")
-public class HistoricoAlunoModel {
+@Entity(name = "historico_da_disciplina")
+@Table(name = "historico_da_disciplina")
+public class HistoricoDisciplinaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,23 +19,23 @@ public class HistoricoAlunoModel {
     private Integer faltas;
     private Integer presencas;
     private PeriodoEnum periodo;
+    @Temporal(TemporalType.DATE)
+    private YearMonth data;
+    private EstadoDisciplinaEnum estadoDaDisciplina;
 
     @ManyToOne
-    @JoinColumn(name = "curso_id", nullable = false)
+    @JoinColumn(name = "profesor_id", nullable = false)
     ProfessorModel professorModel;
 
     @ManyToOne
     @JoinColumn(name = "matricula_id", nullable = false)
     MatriculaModel matriculaModel;
 
-    @ManyToMany
-    @JoinTable(
-            name = "historico_da_disciplina",
-            joinColumns = @JoinColumn(name = "historico_id"),
-            inverseJoinColumns = @JoinColumn(name = "disciplina_id"))
-    List<DisciplinaModel> disciplinaModelList;
+    @ManyToOne
+    @JoinColumn(name = "disciplina_id", nullable = false)
+    DisciplinaModel disciplinaModel;
 
-    public HistoricoAlunoModel() {
+    public HistoricoDisciplinaModel() {
     }
 
     public Long getId() {
@@ -99,11 +102,27 @@ public class HistoricoAlunoModel {
         this.matriculaModel = matriculaModel;
     }
 
-    public List<DisciplinaModel> getDisciplinaModelList() {
-        return disciplinaModelList;
+    public DisciplinaModel getDisciplinaModel() {
+        return disciplinaModel;
     }
 
-    public void setDisciplinaModelList(List<DisciplinaModel> disciplinaModelList) {
-        this.disciplinaModelList = disciplinaModelList;
+    public void setDisciplinaModel(DisciplinaModel disciplinaModel) {
+        this.disciplinaModel = disciplinaModel;
+    }
+
+    public EstadoDisciplinaEnum getEstadoDaDisciplina() {
+        return estadoDaDisciplina;
+    }
+
+    public void setEstadoDaDisciplina(EstadoDisciplinaEnum estadoDaDisciplina) {
+        this.estadoDaDisciplina = estadoDaDisciplina;
+    }
+
+    public YearMonth getData() {
+        return data;
+    }
+
+    public void setData(YearMonth data) {
+        this.data = data;
     }
 }

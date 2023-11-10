@@ -1,10 +1,12 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.AlunoMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.HistoricoDisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HistoricoDisciplinaModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.HistoricoAlunoRepository;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
@@ -22,12 +24,18 @@ import java.util.*;
 @Service
 public class AlunoService {
     private final AlunoRepository alunoRepository;
-    private final HistoricoAlunoRepository historicoAlunoRepository;
+    private final HistoricoDisciplinaRepository historicoDisciplinaRepository;
+    private final MatriculaRepository matriculaRepository;
+    private final DisciplinaRepository disciplinaRepository;
+    private final ProfessorRepository professorRepository;
     private final Logger log = LoggerFactory.getLogger(AlunoService.class);
 
-    public AlunoService(AlunoRepository alunoRepository, HistoricoAlunoRepository historicoAlunoRepository) {
+    public AlunoService(AlunoRepository alunoRepository, HistoricoDisciplinaRepository historicoDisciplinaRepository, MatriculaRepository matriculaRepository, DisciplinaRepository disciplinaRepository, ProfessorRepository professorRepository) {
         this.alunoRepository = alunoRepository;
-        this.historicoAlunoRepository = historicoAlunoRepository;
+        this.historicoDisciplinaRepository = historicoDisciplinaRepository;
+        this.matriculaRepository = matriculaRepository;
+        this.disciplinaRepository = disciplinaRepository;
+        this.professorRepository = professorRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -92,5 +100,9 @@ public class AlunoService {
         log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public HistoricoDisciplinaModel adicionarDisciplinaAoHistorico(HistoricoDisciplinaRequest request) {
+        return historicoDisciplinaRepository.save(HistoricoDisciplinaMapper.INSTANCE.requestToModel(request));
+    }
 
 }

@@ -3,6 +3,8 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HistoricoDisciplinaModel;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.AlunoService;
@@ -55,5 +57,10 @@ public class AlunoController implements AlunoControllerOpenApi {
     public ResponseEntity<Response> deleteAluno(@PathVariable Long id) {
         service.deleteAluno(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Aluno com ID: " + id + " deletado com sucesso."));
+    }
+
+    @PostMapping(value = "/historico", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<HistoricoDisciplinaModel> postHistoricoDisciplina(@RequestBody @Valid HistoricoDisciplinaRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarDisciplinaAoHistorico(request));
     }
 }

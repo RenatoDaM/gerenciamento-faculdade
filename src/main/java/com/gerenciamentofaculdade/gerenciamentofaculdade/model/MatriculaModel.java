@@ -34,7 +34,7 @@ public class MatriculaModel {
     private CursoModel cursoModel;
 
     @OneToMany(mappedBy = "matriculaModel")
-    private List<HistoricoAlunoModel> historicoAlunoModelList;
+    private List<HistoricoDisciplinaModel> historicoDisciplinaModelList;
 
     @Override
     public String toString() {
@@ -100,12 +100,12 @@ public class MatriculaModel {
         this.estadoMatricula = estadoMatricula;
     }
 
-    public List<HistoricoAlunoModel> getHistoricoAlunoModelList() {
-        return historicoAlunoModelList;
+    public List<HistoricoDisciplinaModel> getHistoricoAlunoModelList() {
+        return historicoDisciplinaModelList;
     }
 
-    public void setHistoricoAlunoModelList(List<HistoricoAlunoModel> historicoAlunoModelList) {
-        this.historicoAlunoModelList = historicoAlunoModelList;
+    public void setHistoricoAlunoModelList(List<HistoricoDisciplinaModel> historicoDisciplinaModelList) {
+        this.historicoDisciplinaModelList = historicoDisciplinaModelList;
     }
 
     @Override

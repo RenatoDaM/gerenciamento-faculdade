@@ -6,6 +6,9 @@ public enum DisciplinasPrimeiroSemestreEnum implements IDisciplinasPrimeiroSemes
     ADS("ADS") {
         public void aplicarHistoricoPrimeiroSemestre() {
             System.out.println("Executando ação da Opção 1");
+            // criar histórico matematica discreta
+            // criar histórico laboratório de hardware
+            // etc...
         }
     };
     private final String nomeCurso;
