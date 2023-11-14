@@ -25,17 +25,17 @@ import java.util.*;
 public class AlunoService {
     private final AlunoRepository alunoRepository;
     private final HistoricoDisciplinaRepository historicoDisciplinaRepository;
-    private final MatriculaRepository matriculaRepository;
-    private final DisciplinaRepository disciplinaRepository;
     private final ProfessorRepository professorRepository;
+    private final DisciplinaRepository disciplinaRepository;
+    private final MatriculaRepository matriculaRepository;
     private final Logger log = LoggerFactory.getLogger(AlunoService.class);
 
-    public AlunoService(AlunoRepository alunoRepository, HistoricoDisciplinaRepository historicoDisciplinaRepository, MatriculaRepository matriculaRepository, DisciplinaRepository disciplinaRepository, ProfessorRepository professorRepository) {
+    public AlunoService(AlunoRepository alunoRepository, HistoricoDisciplinaRepository historicoDisciplinaRepository, MatriculaRepository matriculaRepository, ProfessorRepository professorRepository, DisciplinaRepository disciplinaRepository, MatriculaRepository matriculaRepository1) {
         this.alunoRepository = alunoRepository;
         this.historicoDisciplinaRepository = historicoDisciplinaRepository;
-        this.matriculaRepository = matriculaRepository;
-        this.disciplinaRepository = disciplinaRepository;
         this.professorRepository = professorRepository;
+        this.disciplinaRepository = disciplinaRepository;
+        this.matriculaRepository = matriculaRepository1;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -74,18 +74,17 @@ public class AlunoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public AlunoDTO updateAluno(Long id, AlunoDTO aluno) throws Exception {
-        Optional<AlunoModel> alunoAntesDaAtualizacao = alunoRepository.findById(id);
+        AlunoModel alunoAntesDaAtualizacao = alunoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Operação não concluída, não foi encontrado um aluno com este ID"));
 
-        if (alunoAntesDaAtualizacao.isPresent()) {
-            EntityUpdateLogger.loggarModificacoes(alunoAntesDaAtualizacao.get(), aluno);
-            var modelToSave = AlunoMapper.INSTANCE.dtoToModel(aluno);
-            modelToSave.setRa(alunoAntesDaAtualizacao.get().getRa());
-            modelToSave.setId(alunoAntesDaAtualizacao.get().getId());
-            var response = alunoRepository.save(modelToSave);
-            return AlunoMapper.INSTANCE.modelToDTO(response);
-        } else {
-            throw new EntityNotFoundException("Operação não concluida, não foi encontrado um aluno com este ID");
-        }
+        EntityUpdateLogger.loggarModificacoes(alunoAntesDaAtualizacao, aluno);
+
+        var modelToSave = AlunoMapper.INSTANCE.dtoToModel(aluno);
+        modelToSave.setRa(alunoAntesDaAtualizacao.getRa());
+        modelToSave.setId(alunoAntesDaAtualizacao.getId());
+
+        var response = alunoRepository.save(modelToSave);
+        return AlunoMapper.INSTANCE.modelToDTO(response);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -102,6 +101,22 @@ public class AlunoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public HistoricoDisciplinaDTO adicionarDisciplinaAoHistorico(HistoricoDisciplinaDTO request) {
+        if (!professorRepository.existsById(request.getProfessorId())) {
+            throw new EntityNotFoundException("Professor não encontrado");
+        }
+
+        if (!matriculaRepository.existsById(request.getMatriculaId())) {
+            throw new EntityNotFoundException("Aluno não encontrado");
+        }
+
+        if (!disciplinaRepository.existsById(request.getDisciplinaId())) {
+            throw new EntityNotFoundException("Disciplina não encontrada");
+        }
+
+        if (historicoDisciplinaRepository.existsByMatriculaModelIdAndDisciplinaModelIdAndData(request.getMatriculaId(), request.getDisciplinaId(), request.getData())) {
+            throw new EntityExistsException("Já foi criado um histórico para esta matrícula e curso nesta data");
+        }
+
         var result = historicoDisciplinaRepository.save(HistoricoDisciplinaMapper.INSTANCE.requestToModel(request));
         return HistoricoDisciplinaMapper.INSTANCE.modelToRequest(result);
     }

@@ -4,21 +4,33 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoDisci
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.PeriodoEnum;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.YearMonth;
 
 public class HistoricoDisciplinaDTO {
+    @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
+    @PositiveOrZero(message = "Frequencia deve ser positiva")
     private Float frequencia;
+    @PositiveOrZero(message = "Média final deve ser positiva")
+    @Max(10)
     private Float mediaFinal;
+    @PositiveOrZero(message = "Quantidade de faltas deve ser positiva")
     private Integer faltas;
+    @PositiveOrZero(message = "Quantidade de presenças deve ser positiva")
     private Integer presencas;
     private PeriodoEnum periodo;
     @Temporal(TemporalType.DATE)
     private YearMonth data;
     private EstadoDisciplinaEnum estadoDaDisciplina;
+    @Positive(message = "Valor de professorId deve ser numérico e positivo")
     private Long professorId;
+    @Positive(message = "Valor de matriculaId deve ser numérico e positivo")
     private Long matriculaId;
+    @Positive(message = "Valor de disciplinaId deve ser numérico e positivo")
     private Long disciplinaId;
 
     public Long getId() {
