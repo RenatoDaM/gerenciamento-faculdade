@@ -1,8 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.CursoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.CursoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;

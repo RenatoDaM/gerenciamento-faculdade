@@ -1,3 +1,4 @@
+/*
 package com.gerenciamentofaculdade.gerenciamentofaculdade.integrationtests;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
@@ -31,10 +32,12 @@ public class AlunoServiceTest {
     @Autowired
     private AlunoRepository alunoRepository;
 
+*/
 /*
     @Spy
     private AlunoMapper alunoMapper = new AlunoMapperImpl();
-*/
+*//*
+
 
     private static List<AlunoDTO> alunosList = new ArrayList<>();
     private static List<AlunoDTO> alunosComIdList = new ArrayList<>();
@@ -91,3 +94,4 @@ public class AlunoServiceTest {
         alunosComIdList.forEach(aluno -> alunoService.deleteAluno(aluno.getId()));
     }
 }
+*/

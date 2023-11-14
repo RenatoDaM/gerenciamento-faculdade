@@ -1,7 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorLecionaMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.ProfessorMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.ProfessorLecionaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.ProfessorMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.ProfessorDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.exception.ConflitoHorarioException;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.*;

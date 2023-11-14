@@ -1,6 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.MatriculaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.MatriculaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.MatriculaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.AlunoRepository;

@@ -1,9 +1,7 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HistoricoDisciplinaModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaRequest;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -15,10 +13,10 @@ public interface HistoricoDisciplinaMapper {
     @Mapping(target = "professorModel.id", source = "professorId")
     @Mapping(target = "disciplinaModel.id", source = "disciplinaId")
     @Mapping(target = "matriculaModel.id", source = "matriculaId")
-    HistoricoDisciplinaModel requestToModel(HistoricoDisciplinaRequest request);
+    HistoricoDisciplinaModel requestToModel(HistoricoDisciplinaDTO request);
 
     @Mapping(target = "professorId", source = "professorModel.id")
     @Mapping(target = "disciplinaId", source = "disciplinaModel.id")
     @Mapping(target = "matriculaId", source = "matriculaModel.id")
-    HistoricoDisciplinaRequest modelToRequest(HistoricoDisciplinaModel model);
+    HistoricoDisciplinaDTO modelToRequest(HistoricoDisciplinaModel model);
 }

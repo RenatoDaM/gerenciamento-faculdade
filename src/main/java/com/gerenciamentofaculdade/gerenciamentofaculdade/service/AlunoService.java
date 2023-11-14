@@ -1,15 +1,15 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.AlunoMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.HistoricoDisciplinaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.AlunoMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.HistoricoDisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HistoricoDisciplinaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaRequest;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.RaGenerator;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -40,19 +40,21 @@ public class AlunoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public AlunoDTO postAluno(AlunoDTO aluno) {
-        if (alunoRepository.findByRa(aluno.getRa()).isPresent()) {
-            log.warn("Não foi possível persistir aluno, pois foi inserido um RA já existente");
-            throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este RA");
-        }
-
         if (alunoRepository.findByEmail(aluno.getEmail()).isPresent()) {
             log.warn("Não foi possível persistir aluno, pois foi inserido um email já existente no sistema");
             throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este email cadastrado");
         }
 
         AlunoModel alunoModelToPersist = AlunoMapper.INSTANCE.dtoToModel(aluno);
+        alunoModelToPersist.setRa(RaGenerator.gerarRA());
+
+        if (alunoRepository.findByRa(alunoModelToPersist.getRa()).isPresent()) {
+            log.warn("Não foi possível persistir aluno, pois foi inserido um RA já existente");
+            throw new IllegalArgumentException("Operação não concluída. Já existe um aluno com este RA");
+        }
+
         AlunoDTO retornarAlunoComId = AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(alunoModelToPersist));
-        log.info("Aluno com RA: {} foi persistido com sucesso", aluno.getRa());
+        log.info("Aluno com RA: {} foi persistido com sucesso", alunoModelToPersist.getRa());
         return retornarAlunoComId;
     }
 
@@ -71,18 +73,16 @@ public class AlunoService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public AlunoDTO updateAluno(Long id, AlunoModel aluno) throws Exception {
+    public AlunoDTO updateAluno(Long id, AlunoDTO aluno) throws Exception {
         Optional<AlunoModel> alunoAntesDaAtualizacao = alunoRepository.findById(id);
 
-        // vai procurar um aluno com o RA ao qual vai ser atualizado, caso seja diferente do objeto a ser atualizado jogará uma exceção
-        if (alunoRepository.findByRa(aluno.getRa()).isPresent() && !Objects.equals(alunoRepository.findByRa(aluno.getRa()).get().getId(), id)) {
-            throw new EntityExistsException("Já existe uma entidade com este RA");
-        }
-
         if (alunoAntesDaAtualizacao.isPresent()) {
-            aluno.setId(id);
             EntityUpdateLogger.loggarModificacoes(alunoAntesDaAtualizacao.get(), aluno);
-            return AlunoMapper.INSTANCE.modelToDTO(alunoRepository.save(aluno));
+            var modelToSave = AlunoMapper.INSTANCE.dtoToModel(aluno);
+            modelToSave.setRa(alunoAntesDaAtualizacao.get().getRa());
+            modelToSave.setId(alunoAntesDaAtualizacao.get().getId());
+            var response = alunoRepository.save(modelToSave);
+            return AlunoMapper.INSTANCE.modelToDTO(response);
         } else {
             throw new EntityNotFoundException("Operação não concluida, não foi encontrado um aluno com este ID");
         }
@@ -101,8 +101,8 @@ public class AlunoService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public HistoricoDisciplinaModel adicionarDisciplinaAoHistorico(HistoricoDisciplinaRequest request) {
-        return historicoDisciplinaRepository.save(HistoricoDisciplinaMapper.INSTANCE.requestToModel(request));
+    public HistoricoDisciplinaDTO adicionarDisciplinaAoHistorico(HistoricoDisciplinaDTO request) {
+        var result = historicoDisciplinaRepository.save(HistoricoDisciplinaMapper.INSTANCE.requestToModel(request));
+        return HistoricoDisciplinaMapper.INSTANCE.modelToRequest(result);
     }
-
 }

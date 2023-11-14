@@ -1,15 +1,13 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.request;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.EstadoDisciplinaEnum;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.PeriodoEnum;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.YearMonth;
-import java.util.Date;
 
-public class HistoricoDisciplinaRequest {
+public class HistoricoDisciplinaDTO {
     private Long id;
     private Float frequencia;
     private Float mediaFinal;

@@ -1,11 +1,8 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HorarioAulaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HorarioAulaModel;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper

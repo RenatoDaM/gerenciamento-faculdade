@@ -1,7 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.DisciplinaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.CursoMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.DisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.CursoRepository;

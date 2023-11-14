@@ -2,6 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.util.Objects;
@@ -11,8 +12,8 @@ public class AlunoDTO {
     @Positive(message = "Valor de ID deve ser numérico e positivo")
     private Long id;
 
-    @NotNull(message = "RA não pode estar em branco")
-    @Pattern(regexp = "^\\d{25}$", message = "RA deve ser um valor numérico contendo 25 dígitos")
+    @ReadOnlyProperty
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String ra;
 
     @NotBlank(message = "Nome não pode estar em branco")

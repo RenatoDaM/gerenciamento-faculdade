@@ -1,8 +1,6 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -3,8 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HistoricoDisciplinaModel;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaRequest;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.AlunoService;
@@ -49,8 +48,8 @@ public class AlunoController implements AlunoControllerOpenApi {
     }
 
     @PutMapping(value = "{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<AlunoDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody AlunoModel alunoModel) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateAluno(id, alunoModel));
+    public ResponseEntity<AlunoDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody AlunoDTO alunoDTO) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateAluno(id, alunoDTO));
     }
 
     @DeleteMapping(value = "{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -60,7 +59,7 @@ public class AlunoController implements AlunoControllerOpenApi {
     }
 
     @PostMapping(value = "/historico", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HistoricoDisciplinaModel> postHistoricoDisciplina(@RequestBody @Valid HistoricoDisciplinaRequest request) {
+    public ResponseEntity<HistoricoDisciplinaDTO> postHistoricoDisciplina(@RequestBody @Valid HistoricoDisciplinaDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarDisciplinaAoHistorico(request));
     }
 }

@@ -1,8 +1,9 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")

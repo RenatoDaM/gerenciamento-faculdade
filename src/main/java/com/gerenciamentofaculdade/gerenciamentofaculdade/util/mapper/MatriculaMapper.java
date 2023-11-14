@@ -1,4 +1,4 @@
-package com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper;
+package com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.MatriculaModel;

@@ -1,25 +1,16 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.CursoMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.DisciplinaMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.config.mapper.HorarioAulaMapper;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.CursoMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.CursoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.DisciplinaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HorarioAulaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.DiaDaSemanaEnum;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.DisciplinaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.HorarioAulaModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.ProfessorLecionaDisciplinaKey;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ProfessorLecionaResponse {
     ProfessorLecionaDisciplinaKey relacao;

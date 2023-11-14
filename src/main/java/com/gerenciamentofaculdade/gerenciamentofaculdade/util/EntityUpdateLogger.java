@@ -12,12 +12,12 @@ public class EntityUpdateLogger {
     private static Object id;
 
     public static <T> void loggarModificacoes(T antes, T depois) throws IllegalAccessException {
-        Map<String, String> mapAntes = criarMapParaComparacao(antes);
         Map<String, String> mapDepois = criarMapParaComparacao(depois);
+        Map<String, String> mapAntes = criarMapParaComparacao(antes);
 
         for (Map.Entry<String, String> entry : mapDepois.entrySet()) {
             if (!entry.getValue().equals(mapAntes.get(entry.getKey())) && !"<Nulo>".equals(entry.getValue())) {
-                log.info("Objeto de classe {} e id {} foi atualizado. Campo {} foi alterado. Valor {} foi alterado para: {}", depois.getClass(), id, entry.getKey(), mapAntes.get(entry.getKey()), entry.getValue());
+                log.info("Objeto de classe {} e id {} foi atualizado. Campo {} foi alterado. Valor {} foi alterado para: {}", antes.getClass(), id, entry.getKey(), mapAntes.get(entry.getKey()), entry.getValue());
             }
         }
     }
