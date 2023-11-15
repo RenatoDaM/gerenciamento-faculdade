@@ -35,8 +35,8 @@ public class MatriculaService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public MatriculaDTO matricularAluno(MatriculaDTO matriculaDTO) {
-        if (cursoRepository.findById(matriculaDTO.getCursoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
-        if (alunoRepository.findById(matriculaDTO.getAlunoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
+        if (cursoRepository.findById(matriculaDTO.getCursoId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
+        if (alunoRepository.findById(matriculaDTO.getAlunoId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
 
         // possívelmente criar no sistema automaticamente que cadastra o aluno com historicoDisciplina do primeiro semestre,
         // podendo alterar depois. Próximos semestres o aluno que escolhe.
@@ -62,8 +62,8 @@ public class MatriculaService {
     @Transactional
     public MatriculaDTO updateMatricula(MatriculaDTO matriculaDTO, Long id) throws IllegalAccessException {
         Optional<MatriculaModel> matriculaAntesDaAtualizacao = matriculaRepository.findById(id);
-        if (alunoRepository.findById(matriculaDTO.getAlunoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
-        if (cursoRepository.findById(matriculaDTO.getCursoDTO().getId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
+        if (alunoRepository.findById(matriculaDTO.getAlunoId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um aluno com o ID desta solicitação de matrícula");
+        if (cursoRepository.findById(matriculaDTO.getCursoId()).isEmpty()) throw new EntityNotFoundException("Não foi encontrado um curso com o ID desta solicitação de matrícula");
         if (matriculaAntesDaAtualizacao.isEmpty()) throw new EntityNotFoundException("Não foi encontrada uma matrícula com este ID para poder atualizar");
         MatriculaModel matriculaModel = MatriculaMapper.INSTANCE.dtoToModel(matriculaDTO);
         matriculaModel.setId(id);

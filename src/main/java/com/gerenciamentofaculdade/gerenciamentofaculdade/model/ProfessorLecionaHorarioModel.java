@@ -13,8 +13,8 @@ public class ProfessorLecionaHorarioModel {
 
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "professor_id", referencedColumnName = "professor_id"),
-            @JoinColumn(name = "disciplina_id", referencedColumnName = "disciplina_id")
+            @JoinColumn(name = "professor_id", referencedColumnName = "professor_id",  nullable = false),
+            @JoinColumn(name = "disciplina_id", referencedColumnName = "disciplina_id", nullable = false)
     })
     private ProfessorLecionaDisciplinaModel professorLecionaDisciplinaModel;
 

@@ -27,7 +27,6 @@ public class DisciplinaService {
     }
 
     public DisciplinaDTO postDisciplina(DisciplinaDTO disciplinaDTO) {
-        // colocar a tratativa: não pode ter uma disciplina com o nome igual ligada ao mesmo curso
         if (disciplinaRepository.existsByNomeAndCursoModel(disciplinaDTO.getNome(),
                 CursoMapper.INSTANCE.dtoToModel(disciplinaDTO.getCursoDTO()))) throw new EntityExistsException("Já existe uma disciplina com o mesmo nome para este curso");
         if (!cursoRepository.existsById(disciplinaDTO.getCursoDTO().getId())) throw new EntityNotFoundException("Não foi encontrado o curso ao qual a disciplina pertence. ID não existente");

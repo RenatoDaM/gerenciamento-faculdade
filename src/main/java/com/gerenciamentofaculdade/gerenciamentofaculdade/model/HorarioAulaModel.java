@@ -3,7 +3,6 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.enumeration.DiaDaSemanaEnum;
 import jakarta.persistence.*;
-
 import java.time.LocalTime;
 import java.util.List;
 
@@ -15,15 +14,16 @@ public class HorarioAulaModel {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private DiaDaSemanaEnum diaSemana;
 
     @Temporal(TemporalType.TIME)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIME")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     LocalTime horarioInicio;
 
     @Temporal(TemporalType.TIME)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIME")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     LocalTime horarioFim;
 

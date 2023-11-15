@@ -13,7 +13,7 @@ public class MatriculaModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EstadoMatriculaEnum estadoMatricula;
 

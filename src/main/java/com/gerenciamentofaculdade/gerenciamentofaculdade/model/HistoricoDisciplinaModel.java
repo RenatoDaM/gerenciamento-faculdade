@@ -14,13 +14,21 @@ public class HistoricoDisciplinaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private Float frequencia;
+    @Column(nullable = false)
     private Float mediaFinal;
+    @Column(nullable = false)
     private Integer faltas;
+    @Column(nullable = false)
     private Integer presencas;
+    @Column(nullable = false)
     private PeriodoEnum periodo;
     @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private YearMonth data;
+
+    @Column(nullable = false)
     private EstadoDisciplinaEnum estadoDaDisciplina;
 
     @ManyToOne

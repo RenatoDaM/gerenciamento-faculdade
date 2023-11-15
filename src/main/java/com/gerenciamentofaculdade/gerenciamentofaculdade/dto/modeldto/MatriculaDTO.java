@@ -27,12 +27,10 @@ public class MatriculaDTO {
     private LocalDateTime dataMatricula;
 
     @NotNull
-    @JsonProperty("aluno")
-    private AlunoDTO alunoDTO;
+    private Long alunoId;
 
     @NotNull
-    @JsonProperty("curso")
-    private CursoDTO cursoDTO;
+    private Long cursoId;
 
     public Long getId() {
         return id;
@@ -66,19 +64,19 @@ public class MatriculaDTO {
         this.dataMatricula = dataMatricula;
     }
 
-    public AlunoDTO getAlunoDTO() {
-        return alunoDTO;
+    public Long getAlunoId() {
+        return alunoId;
     }
 
-    public void setAlunoDTO(AlunoDTO alunoDTO) {
-        this.alunoDTO = alunoDTO;
+    public void setAlunoId(Long alunoId) {
+        this.alunoId = alunoId;
     }
 
-    public CursoDTO getCursoDTO() {
-        return cursoDTO;
+    public Long getCursoId() {
+        return cursoId;
     }
 
-    public void setCursoDTO(CursoDTO cursoDTO) {
-        this.cursoDTO = cursoDTO;
+    public void setCursoId(Long cursoId) {
+        this.cursoId = cursoId;
     }
 }

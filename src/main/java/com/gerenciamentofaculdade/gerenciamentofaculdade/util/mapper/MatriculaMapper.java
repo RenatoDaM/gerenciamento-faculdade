@@ -10,12 +10,12 @@ import org.mapstruct.factory.Mappers;
 public interface MatriculaMapper {
     MatriculaMapper INSTANCE = Mappers.getMapper( MatriculaMapper.class );
 
-    @Mapping(target = "alunoModel", source = "alunoDTO")
-    @Mapping(target = "cursoModel", source = "cursoDTO")
+    @Mapping(target = "alunoModel.id", source = "alunoId")
+    @Mapping(target = "cursoModel.id", source = "cursoId")
     MatriculaModel dtoToModel(MatriculaDTO matriculaDTO);
 
-    @Mapping(target = "alunoDTO", source = "alunoModel")
-    @Mapping(target = "cursoDTO", source = "cursoModel")
+    @Mapping(target = "alunoId", source = "alunoModel.id")
+    @Mapping(target = "cursoId", source = "cursoModel.id")
     MatriculaDTO modelToDto(MatriculaModel matriculaModel);
 /*    default AlunoModel alunoDtoToAlunoModel(AlunoDTO alunoDTO) {
         return Mappers.getMapper(AlunoMapper.class).dtoToModel(alunoDTO);

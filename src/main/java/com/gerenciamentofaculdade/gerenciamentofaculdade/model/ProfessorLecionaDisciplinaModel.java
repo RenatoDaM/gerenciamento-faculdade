@@ -18,12 +18,12 @@ public class ProfessorLecionaDisciplinaModel {
 
     @ManyToOne
     @MapsId("professorId")
-    @JoinColumn(name = "professor_id")
+    @JoinColumn(name = "professor_id", nullable = false)
     ProfessorModel professorModel;
 
     @ManyToOne
     @MapsId("disciplinaId")
-    @JoinColumn(name = "disciplina_id")
+    @JoinColumn(name = "disciplina_id", nullable = false)
     DisciplinaModel disciplinaModel;
 
     @OneToMany(mappedBy = "professorLecionaDisciplinaModel", cascade = CascadeType.ALL)
