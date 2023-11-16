@@ -1,6 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
@@ -47,19 +48,19 @@ public class AlunoController implements AlunoControllerOpenApi {
         return service.getAllAlunos(alunoParams, pageable);
     }
 
-    @PutMapping(value = "{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AlunoDTO> updateAluno(@PathVariable Long id, @Valid @RequestBody AlunoDTO alunoDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAluno(id, alunoDTO));
     }
 
-    @DeleteMapping(value = "{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Response> deleteAluno(@PathVariable Long id) {
         service.deleteAluno(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Aluno com ID: " + id + " deletado com sucesso."));
     }
 
-    @PostMapping(value = "/historico", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HistoricoDisciplinaDTO> postHistoricoDisciplina(@RequestBody @Valid HistoricoDisciplinaDTO request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarDisciplinaAoHistorico(request));
+    @GetMapping(value = "/{id}/matriculas",produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Page<MatriculaDTO> getAllMatriculasByAlunoId(@PathVariable Long id, @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
+        return service.getAllMatriculasByAlunoId(id, pageable);
     }
 }

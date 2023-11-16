@@ -1,7 +1,9 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.MatriculaControllerOpenApi;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.MatriculaUpdateRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.MatriculaService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,14 +43,25 @@ public class MatriculaController implements MatriculaControllerOpenApi {
         return matriculaService.getAllMatriculas(pageable);
     }
 
-    @PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Long id) throws IllegalAccessException {
-        return ResponseEntity.status(HttpStatus.OK).body(matriculaService.updateMatricula(matriculaDTO, id));
+    @PutMapping(value = "/{matriculaId}",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaUpdateRequest request, @PathVariable Long matriculaId) throws IllegalAccessException {
+        return ResponseEntity.status(HttpStatus.OK).body(matriculaService.updateMatricula(request, matriculaId));
     }
 
     @DeleteMapping(value = "{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Response> deleteCurso(@PathVariable Long id) {
         matriculaService.deleteMatricula(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Matrícula com ID: " + id + " deletado com sucesso."));
+    }
+
+    @PostMapping(value = "/historico", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<HistoricoDisciplinaDTO> postHistoricoDisciplina(@RequestBody @Valid HistoricoDisciplinaDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(matriculaService.adicionarDisciplinaAoHistorico(request));
+    }
+
+    @GetMapping(value = "/{id}/historico", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Page<HistoricoDisciplinaDTO> getAllHistoricosByMatriculaId(@PathVariable Long id,
+                                                     @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
+        return matriculaService.getAllHistoricosByMatriculaId(id, pageable);
     }
 }

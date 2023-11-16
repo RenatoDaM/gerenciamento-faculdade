@@ -1,5 +1,6 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public class ProfessorDTO {
     @Positive(message = "Valor de ID deve ser numérico e positivo")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Nome não pode estar em branco")

@@ -20,7 +20,7 @@ public class CursoModel {
     @OneToMany(mappedBy = "cursoModel")
     List<MatriculaModel> matriculaList;
 
-    @OneToMany(mappedBy = "cursoModel")
+    @OneToMany(mappedBy = "cursoModel", cascade = CascadeType.REMOVE)
     List<DisciplinaModel> disciplinaList;
 
     public Long getId() {

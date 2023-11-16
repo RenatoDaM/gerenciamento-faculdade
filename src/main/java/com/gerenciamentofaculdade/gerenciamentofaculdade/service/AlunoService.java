@@ -1,42 +1,36 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
+import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.AlunoMapper;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.HistoricoDisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.RaGenerator;
-import jakarta.persistence.EntityExistsException;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.MatriculaMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
     private final AlunoRepository alunoRepository;
-    private final HistoricoDisciplinaRepository historicoDisciplinaRepository;
-    private final ProfessorRepository professorRepository;
-    private final DisciplinaRepository disciplinaRepository;
     private final MatriculaRepository matriculaRepository;
     private final Logger log = LoggerFactory.getLogger(AlunoService.class);
 
-    public AlunoService(AlunoRepository alunoRepository, HistoricoDisciplinaRepository historicoDisciplinaRepository, MatriculaRepository matriculaRepository, ProfessorRepository professorRepository, DisciplinaRepository disciplinaRepository, MatriculaRepository matriculaRepository1) {
+    public AlunoService(AlunoRepository alunoRepository, MatriculaRepository matriculaRepository) {
         this.alunoRepository = alunoRepository;
-        this.historicoDisciplinaRepository = historicoDisciplinaRepository;
-        this.professorRepository = professorRepository;
-        this.disciplinaRepository = disciplinaRepository;
-        this.matriculaRepository = matriculaRepository1;
+        this.matriculaRepository = matriculaRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -78,7 +72,6 @@ public class AlunoService {
         AlunoModel alunoAntesDaAtualizacao = alunoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Operação não concluída, não foi encontrado um aluno com este ID"));
 
-
         var modelToSave = AlunoMapper.INSTANCE.dtoToModel(aluno);
         modelToSave.setRa(alunoAntesDaAtualizacao.getRa());
         modelToSave.setId(alunoAntesDaAtualizacao.getId());
@@ -100,25 +93,9 @@ public class AlunoService {
         log.info("Aluno com ID: {} e RA: {} foi deletado do banco de dados", id, alunoModel.getRa());
     }
 
-    @Transactional(rollbackFor = {SQLException.class})
-    public HistoricoDisciplinaDTO adicionarDisciplinaAoHistorico(HistoricoDisciplinaDTO request) {
-        if (!professorRepository.existsById(request.getProfessorId())) {
-            throw new EntityNotFoundException("Professor não encontrado");
-        }
-
-        if (!matriculaRepository.existsById(request.getMatriculaId())) {
-            throw new EntityNotFoundException("Aluno não encontrado");
-        }
-
-        if (!disciplinaRepository.existsById(request.getDisciplinaId())) {
-            throw new EntityNotFoundException("Disciplina não encontrada");
-        }
-
-        if (historicoDisciplinaRepository.existsByMatriculaModelIdAndDisciplinaModelIdAndData(request.getMatriculaId(), request.getDisciplinaId(), request.getData())) {
-            throw new EntityExistsException("Já foi criado um histórico para esta matrícula e curso nesta data");
-        }
-
-        var result = historicoDisciplinaRepository.save(HistoricoDisciplinaMapper.INSTANCE.requestToModel(request));
-        return HistoricoDisciplinaMapper.INSTANCE.modelToRequest(result);
+    public Page<MatriculaDTO> getAllMatriculasByAlunoId(Long alunoId, Pageable pageable) {
+        var list = matriculaRepository.findAllByAlunoModel_Id(alunoId).stream()
+                .map(MatriculaMapper.INSTANCE::modelToDto).collect(Collectors.toList());
+        return PaginationUtils.paginarLista(list, pageable);
     }
 }

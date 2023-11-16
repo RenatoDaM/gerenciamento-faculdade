@@ -1,6 +1,7 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.MatriculaUpdateRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.ErrorResponse;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +43,7 @@ public interface MatriculaControllerOpenApi {
             @ApiResponse(description = "Erro servidor", responseCode = "500", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(description = "Tipo de mídia não suportado", responseCode = "415", content = @Content(mediaType = "application/json",  schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Tipo de mídia não suportado ainda", externalValue = "static/api-response-examples/geral/tipo-midia-nao-suportado.json")))
     })
-    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Long id) throws IllegalAccessException;
+    public ResponseEntity<MatriculaDTO> updateCurso(@Valid @RequestBody MatriculaUpdateRequest request, @PathVariable Long matriculaId) throws IllegalAccessException;
     @Operation(summary = "Deleta uma Matrícula já existente no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(description = "Operação FALHOU. Não foi possível deletar a Matrícula", responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "Não foi possível deletar", externalValue = "static/api-response-examples/aluno/delete/erro-ao-deletar.json"))),

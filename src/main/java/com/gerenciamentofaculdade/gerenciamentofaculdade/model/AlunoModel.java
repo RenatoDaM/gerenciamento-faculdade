@@ -27,7 +27,7 @@ public class AlunoModel {
     @Column(length = 17)
     private String telefone2;
 
-    @OneToMany(mappedBy = "alunoModel")
+    @OneToMany(mappedBy = "alunoModel", cascade = CascadeType.REMOVE)
     private List<MatriculaModel> matriculasModel;
 
     public AlunoModel(Long id, String ra, String nome, String email, String telefone1, String telefone2, List<MatriculaModel> matriculasModel) {
