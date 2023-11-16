@@ -53,7 +53,7 @@ public class DisciplinaService {
                 CursoMapper.INSTANCE.dtoToModel(disciplinaDTO.getCursoDTO()))) throw new EntityExistsException("Já existe uma disciplina com o mesmo nome para este curso");
         disciplinaDTO.setId(id);
         DisciplinaModel savedDisciplina = disciplinaRepository.save(DisciplinaMapper.INSTANCE.dtoToModel(disciplinaDTO));
-        EntityUpdateLogger.loggarModificacoes(disciplinaAntesDaAtualizacao, savedDisciplina);
+        EntityUpdateLogger.loggarModificacoes(disciplinaAntesDaAtualizacao.get(), savedDisciplina);
         return DisciplinaMapper.INSTANCE.modelToDTO(savedDisciplina);
     }
 
