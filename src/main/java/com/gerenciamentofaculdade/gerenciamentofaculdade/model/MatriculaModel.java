@@ -33,7 +33,7 @@ public class MatriculaModel {
     @JoinColumn(name="curso_id", nullable = false)
     private CursoModel cursoModel;
 
-    @OneToMany(mappedBy = "matriculaModel")
+    @OneToMany(mappedBy = "matriculaModel", cascade = CascadeType.REMOVE)
     private List<HistoricoDisciplinaModel> historicoDisciplinaModelList;
 
     @Override

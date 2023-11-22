@@ -3,6 +3,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.MatriculaControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaPutRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.request.MatriculaUpdateRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.MatriculaService;
@@ -63,5 +64,16 @@ public class MatriculaController implements MatriculaControllerOpenApi {
     public Page<HistoricoDisciplinaDTO> getAllHistoricosByMatriculaId(@PathVariable Long id,
                                                      @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
         return matriculaService.getAllHistoricosByMatriculaId(id, pageable);
+    }
+
+    @PutMapping(value = "/historico/{historicoDisciplinaId}",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<HistoricoDisciplinaDTO> updateHistoricoDisciplina(@Valid @RequestBody HistoricoDisciplinaPutRequest historicoDisciplinaPutRequest, @PathVariable Long historicoDisciplinaId) throws IllegalAccessException {
+        return ResponseEntity.status(HttpStatus.OK).body(matriculaService.updateHistoricoDisciplina(historicoDisciplinaId, historicoDisciplinaPutRequest));
+    }
+
+    @DeleteMapping(value = "/historico/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Response> deleteHistoricoDisciplina(@PathVariable Long id) {
+        matriculaService.deleteHistoricoDisciplina(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Matrícula com ID: " + id + " deletado com sucesso."));
     }
 }

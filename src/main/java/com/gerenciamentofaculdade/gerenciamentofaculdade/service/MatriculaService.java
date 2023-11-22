@@ -2,6 +2,7 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.service;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.request.HistoricoDisciplinaPutRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.request.MatriculaUpdateRequest;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.HistoricoDisciplinaMapper;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.MatriculaMapper;
@@ -80,7 +81,7 @@ public class MatriculaService {
         return MatriculaMapper.INSTANCE.modelToDto(matriculaModel);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {SQLException.class})
     public void deleteMatricula(Long id) {
         matriculaRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Operação não concluída, não foi encontrada uma matrícula com este ID para poder deletar"));
@@ -115,5 +116,27 @@ public class MatriculaService {
         var test = historicoDisciplinaRepository.findByMatriculaModelId(id).stream()
                 .map(HistoricoDisciplinaMapper.INSTANCE::modelToRequest).collect(Collectors.toList());
         return PaginationUtils.paginarLista(test, pageable);
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public HistoricoDisciplinaDTO updateHistoricoDisciplina(Long id, HistoricoDisciplinaPutRequest request) {
+        var modelHistoricoDisciplina = historicoDisciplinaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Operação FALHOU. Não foi encontrado um registro de Histórico Disciplina com este ID"));
+        modelHistoricoDisciplina.setEstadoDaDisciplina(request.getEstadoDaDisciplina());
+        modelHistoricoDisciplina.setFaltas(request.getFaltas());
+        modelHistoricoDisciplina.setMediaFinal(request.getMediaFinal());
+        modelHistoricoDisciplina.setFrequencia(request.getFrequencia());
+        modelHistoricoDisciplina.setPresencas(request.getPresencas());
+        modelHistoricoDisciplina.setPeriodo(request.getPeriodo());
+
+        return HistoricoDisciplinaMapper.INSTANCE.modelToRequest(historicoDisciplinaRepository.save(modelHistoricoDisciplina));
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public void deleteHistoricoDisciplina(Long id) {
+        historicoDisciplinaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Operação não concluída, não foi encontrado um Histórico Disciplina com este ID"));
+        historicoDisciplinaRepository.deleteById(id);
+        log.info("DELETE: Histórico Disciplina com o ID {} foi deletado", id);
     }
 }
