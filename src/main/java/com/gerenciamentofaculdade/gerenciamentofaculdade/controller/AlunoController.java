@@ -2,11 +2,9 @@ package com.gerenciamentofaculdade.gerenciamentofaculdade.controller;
 
 import com.gerenciamentofaculdade.gerenciamentofaculdade.controller.openapi.AlunoControllerOpenApi;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.MatriculaDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.HistoricoDisciplinaDTO;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.response.generic.Response;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.search.param.AlunoParametroFiltro;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.service.AlunoService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -43,8 +41,9 @@ public class AlunoController implements AlunoControllerOpenApi {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public Page<AlunoDTO> getAllAlunos(@RequestParam(required = false, value = "ra") String ra,
                                          @RequestParam(required = false, value = "nome") String nome,
+                                         @RequestParam(required = false, value = "email") String email,
                                          @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
-        var alunoParams = new AlunoParams(ra, nome);
+        var alunoParams = new AlunoParametroFiltro(ra, nome, email);
         return service.getAllAlunos(alunoParams, pageable);
     }
 

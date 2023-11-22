@@ -44,6 +44,15 @@ public class AlunoModel {
 
     }
 
+    public AlunoModel(Long id, String ra, String nome, String email, String telefone1, String telefone2) {
+        this.id = id;
+        this.ra = ra;
+        this.nome = nome;
+        this.email = email;
+        this.telefone1 = telefone1;
+        this.telefone2 = telefone2;
+    }
+
     public Long getId() {
         return id;
     }

@@ -5,7 +5,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.util.mapper.AlunoMapper
 import com.gerenciamentofaculdade.gerenciamentofaculdade.model.AlunoModel;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.repository.*;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.dto.modeldto.AlunoDTO;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.search.AlunoParams;
+import com.gerenciamentofaculdade.gerenciamentofaculdade.search.param.AlunoParametroFiltro;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.EntityUpdateLogger;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.PaginationUtils;
 import com.gerenciamentofaculdade.gerenciamentofaculdade.util.RaGenerator;
@@ -61,9 +61,9 @@ public class AlunoService {
                 }));
     }
 
-    public Page<AlunoDTO> getAllAlunos(AlunoParams params, Pageable pageable) {
+    public Page<AlunoDTO> getAllAlunos(AlunoParametroFiltro params, Pageable pageable) {
         List<AlunoDTO> resultList = new ArrayList<>();
-        alunoRepository.findAll().forEach(alunoModel -> resultList.add(AlunoMapper.INSTANCE.modelToDTO(alunoModel)));
+        alunoRepository.getAllWithFilter(params.getRa(), params.getNome(), params.getEmail()).forEach(alunoModel -> resultList.add(AlunoMapper.INSTANCE.modelToDTO(alunoModel)));
         return PaginationUtils.paginarLista(resultList, pageable);
     }
 
