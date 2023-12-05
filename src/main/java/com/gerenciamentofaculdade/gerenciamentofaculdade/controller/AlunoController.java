@@ -11,11 +11,10 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @Validated
 @CrossOrigin(origins = "*")
@@ -43,6 +42,37 @@ public class AlunoController implements AlunoControllerOpenApi {
                                          @RequestParam(required = false, value = "nome") String nome,
                                          @RequestParam(required = false, value = "email") String email,
                                          @PageableDefault(size = 10) @Parameter(hidden = true) Pageable pageable) {
+
+        String firstname = "João";
+        String lastname = "Silva";
+        String email2 = "joao.silva@example.com";
+        String password = "senha123";
+
+        String jsonString = "{"
+                + "\"firstname\": \"" + firstname + "\","
+                + "\"lastname\": \"" + lastname + "\","
+                + "\"email\": \"" + email2 + "\","
+                + "\"password\": \"" + password + "\""
+                + "}";
+        String token = "";
+        String authServerUrl = "http://localhost:8081/api/v1/auth/authentication";
+        String url = authServerUrl + "?token=" + token;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String requestBody = "{ \"email\": \"" + "teste@gmail.com" + "\", \"senha\": \"" + "teste" + "\" }";
+/*
+        headers.set("Authorization", "Bearer " + token);
+*/
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                authServerUrl,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+        System.out.println(requestEntity);
+
         var alunoParams = new AlunoParametroFiltro(ra, nome, email);
         return service.getAllAlunos(alunoParams, pageable);
     }
