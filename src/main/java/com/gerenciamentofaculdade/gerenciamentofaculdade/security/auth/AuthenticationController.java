@@ -1,5 +1,8 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade.security.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,5 +32,13 @@ public class AuthenticationController {
       @RequestBody AuthenticationRequest request
   ) {
     return ResponseEntity.ok(authenticationService.authenticate(request));
+  }
+
+  @PostMapping("/refreshtoken")
+  public void refreshToken(
+      HttpServletRequest request,
+      HttpServletResponse response
+  ) throws IOException {
+    authenticationService.refreshToken(request, response);
   }
 }

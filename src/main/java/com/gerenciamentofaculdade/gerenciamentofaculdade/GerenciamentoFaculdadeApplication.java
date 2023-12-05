@@ -1,19 +1,14 @@
 package com.gerenciamentofaculdade.gerenciamentofaculdade;
 
-import com.gerenciamentofaculdade.gerenciamentofaculdade.security.auth.AuthenticationService;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.security.auth.RegisterRequest;
-import com.gerenciamentofaculdade.gerenciamentofaculdade.security.user.Role;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class GerenciamentoFaculdadeApplication {
     public static void main(String[] args) {
         SpringApplication.run(GerenciamentoFaculdadeApplication.class, args);
     }
-    @Bean
+    /*@Bean
     public CommandLineRunner commandLineRunner(
         AuthenticationService service
     ) {
@@ -33,7 +28,6 @@ public class GerenciamentoFaculdadeApplication {
             manager.setPassword("password");
             manager.setRole(Role.ADMIN);
             System.out.println("Manager token: " + service.register(manager).getAccessToken());
-
         };
-    }
+    }*/
 }

@@ -72,12 +72,13 @@ public class JwtService {
     }
 
 
-    public Claims extractAllClaims(String token) {
-        return Jwts.parser().verifyWith(getSignKey())
-                .decryptWith(getSignKey())
-                .build()
-                .parseUnsecuredClaims(token)
-                .getPayload();
+    private Claims extractAllClaims(String token) {
+        return Jwts
+            .parser()
+            .setSigningKey(getSignKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
     }
 
     public SecretKey getSignKey() {
