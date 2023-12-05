@@ -11,6 +11,7 @@ import com.gerenciamentofaculdade.gerenciamentofaculdade.security.user.UserRepos
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +43,7 @@ public class AuthenticationService {
         user.setEmail(request.getEmail());
         System.out.println(request.toString());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(request.getRole());
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var response = new AuthenticationResponse();
@@ -113,5 +114,11 @@ public class AuthenticationService {
         token.setExpired(false);
         token.setRevoked(false);
         tokenRepository.save(token);
+    }
+
+    public void updateAuthorities(Integer userId) {
+        Optional<User> user = repository.findById(userId);
+        user.get().setRole(Role.ADMIN);
+        repository.save(user.get());
     }
 }
